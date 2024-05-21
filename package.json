@@ -1,0 +1,50 @@
+{
+  "name": "gizboxvscode",
+  "displayName": "GizboxVSCode",
+  "description": "",
+  "version": "0.0.1",
+  "publisher": "REW",
+  "icon": "images/icon.png",
+  "engines": {
+    "vscode": "^1.89.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/REW-Z/Gizbox"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "gizbox",
+        "aliases": [
+          "Gizbox",
+          "gizbox"
+        ],
+        "extensions": [
+          ".gix"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "themes": [
+      {
+        "label": "Dark+",
+        "uiTheme": "vs-dark",
+        "path": "./themes/default-theme.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "gizbox",
+        "scopeName": "source.gizbox",
+        "path": "./syntaxes/gizbox.tmLanguage.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

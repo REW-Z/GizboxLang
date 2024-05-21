@@ -1,0 +1,37 @@
+{
+    "name": "Dark+",
+    "type": "vs-dark",
+    "colors": {},
+    "tokenColors": [
+        {
+            "scope": "keyword.control.gizbox",
+            "settings": {
+                "foreground": "#749fd6" 
+            }
+        },
+        {
+            "scope": "storage.type.gizbox",
+            "settings": {
+                "foreground": "#84b5ff" 
+            }
+        },
+        {
+            "scope": "string.quoted.double.gizbox",
+            "settings": {
+                "foreground": "#945e45" 
+            }
+        },
+        {
+            "scope": "namespace.gizbox",
+            "settings": {
+                "foreground": "#525252" 
+            }
+        },
+        {
+            "scope": "identifier.gizbox",
+            "settings": {
+                "foreground": "#d6d6ce" 
+            }
+        }
+    ]
+}

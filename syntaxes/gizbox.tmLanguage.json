@@ -1,0 +1,54 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Gizbox",
+	"patterns": [
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#identifier"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.gizbox",
+					"match": "\\b(namespace|class|import|using|if|else|while|for|return|break|delete|new|this)\\b"
+				},
+				{
+					"name": "storage.type.gizbox",
+					"match": "\\b(bool|int|float|double|char|string|void)\\b"
+				}
+
+			]
+		},
+		"identifier": {
+			"patterns": [
+				{
+					"name": "namespace.gizbox",
+					"match": "\\b([A-Za-z_][A-Za-z0-9_]*)::"
+				},
+				{
+					"name": "identifier.gizbox",
+					"match": "\\b([A-Za-z_][A-Za-z0-9_]*)(?!::)\\b"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.gizbox",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.gizbox",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.gizbox"
+}
