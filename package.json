@@ -15,6 +15,10 @@
   "categories": [
     "Programming Languages"
   ],
+  "activationEvents": [
+    "onLanguage:gizbox"
+  ],
+  "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
@@ -44,7 +48,31 @@
       }
     ]
   },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
+    "test": "sh ./scripts/e2e.sh"
+  },
   "devDependencies": {
-    "typescript": "^5.4.5"
-  }
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^18.19.33",
+    "@types/vscode": "^1.89.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "mocha": "^10.3.0",
+    "typescript": "^5.4.5",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-protocol": "^3.17.5",
+    "vscode-languageserver-types": "^3.17.5"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "files": [
+    "bin",
+    "node_modules/vscode-languageclient"
+  ]
 }

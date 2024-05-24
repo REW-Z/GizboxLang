@@ -1,0 +1,12 @@
+﻿import <"stdlib">  
+
+using Core;  
+using Console;
+using Collections;
+
+GC::Enable();      
+
+void Test()
+{
+}  
+Collections::List a = new Collections::List();

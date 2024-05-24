@@ -20,18 +20,6 @@
             "settings": {
                 "foreground": "#945e45" 
             }
-        },
-        {
-            "scope": "namespace.gizbox",
-            "settings": {
-                "foreground": "#525252" 
-            }
-        },
-        {
-            "scope": "identifier.gizbox",
-            "settings": {
-                "foreground": "#d6d6ce" 
-            }
         }
     ]
 }

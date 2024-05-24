@@ -7,9 +7,6 @@
 		},
 		{
 			"include": "#keywords"
-		},
-		{
-			"include": "#identifier"
 		}
 	],
 	"repository": {
@@ -26,18 +23,7 @@
 
 			]
 		},
-		"identifier": {
-			"patterns": [
-				{
-					"name": "namespace.gizbox",
-					"match": "\\b([A-Za-z_][A-Za-z0-9_]*)::"
-				},
-				{
-					"name": "identifier.gizbox",
-					"match": "\\b([A-Za-z_][A-Za-z0-9_]*)(?!::)\\b"
-				}
-			]
-		},
+
 		"strings": {
 			"name": "string.quoted.double.gizbox",
 			"begin": "\"",
