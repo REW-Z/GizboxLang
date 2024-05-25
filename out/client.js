@@ -8,6 +8,8 @@ const node_1 = require("vscode-languageclient/node");
 let client;
 //自动补全提供器  
 let completionProvider;
+//当前文本  
+let currentGizDocument;
 //高亮   
 // 类名  
 const classNameDecoration = vscode.window.createTextEditorDecorationType({
@@ -41,6 +43,9 @@ function activate(context) {
         },
         outputChannelName: 'Language Server Example',
         traceOutputChannel: vscode.window.createOutputChannel('Language Server Trace'),
+        initializationOptions: {
+        // workspaceFolder: ((vscode.workspace.workspaceFolders != null) ? vscode.workspace.workspaceFolders[0].uri.toString() : null)
+        }
     };
     client = new node_1.LanguageClient('languageServerExample', 'Language Server Example', serverOptions, clientOptions);
     //活动的编辑器文本打开事件
@@ -48,7 +53,7 @@ function activate(context) {
     vscode.window.onDidChangeActiveTextEditor((teditor) => {
         const isGizbox = vscode.window.activeTextEditor?.document.languageId === 'gizbox';
         if (isGizbox) {
-            vscode.window.showInformationMessage("进入新的Giz文档");
+            // vscode.window.showInformationMessage("进入新的Giz文档");
             //高亮刷新  
             setTimeout(() => {
                 if (vscode.window.activeTextEditor?.document != null) {
@@ -69,19 +74,24 @@ function activate(context) {
     });
     //客户端启动  
     var promise = client.start();
-    //测试字体装饰  
-    {
-        // const textDecorations: vscode.DecorationOptions[] = [];
-        // const range = new vscode.Range(
-        //     new vscode.Position(1, 0),
-        //     new vscode.Position(1, 3)
-        // );
-        // const decoration = { range: range };
-        // textDecorations.push(decoration);
-        // // 应用不同的装饰
-        // let edi : any = vscode.window.activeTextEditor;
-        // edi.setDecorations(textHighlightDecoration, textDecorations);
-    }
+    //截获  
+    // client.onNotification("textDocument/publishDiagnostics", (params) => {
+    //     vscode.window.showInformationMessage("diagnostice received!");
+    // })
+    //启动2秒后刷新高亮  
+    setTimeout(() => {
+        TrySetCurrentGizTextDocument();
+        if (currentGizDocument != null) {
+            SendHighlightRequest(currentGizDocument, { line: 0, character: 0 });
+        }
+    }, 1000);
+    //每10秒全量更新  
+    setInterval(() => {
+        TrySetCurrentGizTextDocument();
+        if (currentGizDocument != null) {
+            FullContentUpdate();
+        }
+    }, 10000);
     //文本改变事件监听  
     vscode.workspace.onDidChangeTextDocument(event => {
         const contentChanges = event.contentChanges;
@@ -108,7 +118,14 @@ function activate(context) {
             // client.sendNotification('textDocument/didChange', params);
             // 如果输入分割字符，则发送补全、高亮请求
             const text = contentChanges[0].text;
-            if (text === '.' || text === ';' || /\s/.test(text)) {
+            const rangeLength = contentChanges[0].rangeLength;
+            if (rangeLength > 0 || text.endsWith('.') || text.endsWith(';') || text.endsWith(':') || text.endsWith(' ') || text.endsWith('\n') || /\s/.test(text)) {
+                setTimeout(() => {
+                    {
+                        const position = contentChanges[0].range.start;
+                        SendHighlightRequest(document, position);
+                    }
+                }, 100);
                 setTimeout(() => {
                     {
                         const position = contentChanges[0].range.start;
@@ -118,31 +135,53 @@ function activate(context) {
                         };
                         client.sendRequest('textDocument/completion', params).then((completionItems) => {
                             updateCompletionProvider(context, completionItems);
+                            //REW：立刻显示全部补全项（不等待输入首字母或者模糊字母才显示）    
+                            if (text.endsWith('.')) {
+                                vscode.commands.executeCommand('editor.action.triggerSuggest');
+                            }
                         });
+                        // vscode.window.showInformationMessage("Send: Completion");
                     }
                 }, 200);
-                setTimeout(() => {
-                    {
-                        const position = contentChanges[0].range.start;
-                        const params = {
-                            textDocument: { uri: document.uri.toString() },
-                            position: { line: position.line, character: position.character + 1 }
-                        };
-                        client.sendRequest('textDocument/documentHighlight', params).then((highlights) => {
-                            const editor = vscode.window.activeTextEditor;
-                            applyHighlights(editor, highlights);
-                        }, error => {
-                            vscode.window.showInformationMessage(error);
-                        });
-                    }
-                }, 400);
             }
         }
     });
 }
 exports.activate = activate;
+function TrySetCurrentGizTextDocument() {
+    const editor = vscode.window.activeTextEditor;
+    if (editor?.document.languageId === "gizbox") {
+        currentGizDocument = editor.document;
+    }
+}
+function FullContentUpdate() {
+    const params = {
+        textDocument: {
+            uri: currentGizDocument.uri.toString()
+        },
+        contentChanges: [
+            {
+                text: currentGizDocument.getText(),
+            }
+        ]
+    };
+    client.sendNotification('textDocument/didChange', params);
+    // vscode.window.showInformationMessage("Full Update");
+}
+function SendHighlightRequest(document, position) {
+    const params = {
+        textDocument: { uri: document.uri.toString() },
+        position: { line: position.line, character: position.character + 1 }
+    };
+    client.sendRequest('textDocument/documentHighlight', params).then((highlights) => {
+        const editor = vscode.window.activeTextEditor;
+        applyHighlights(editor, highlights);
+    }, error => {
+        vscode.window.showInformationMessage(error);
+    });
+}
 function applyHighlights(editor, highlights) {
-    if (Array.isArray(highlights)) {
+    if (Array.isArray(highlights) && highlights.length > 0) {
         const classNameDecorationOpts = [];
         const variableDecorationOpts = [];
         const literalDecorationOpts = [];

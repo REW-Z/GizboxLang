@@ -1,10 +1,11 @@
 
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { LanguageClientOptions, SynchronizeOptions} from 'vscode-languageclient';
+import { DidChangeWorkspaceFoldersNotification, LanguageClientOptions, SynchronizeOptions, WorkspaceFolder} from 'vscode-languageclient';
 import { LanguageClient, ServerOptions, TransportKind} from 'vscode-languageclient/node';
 import { channel } from 'diagnostics_channel';
 import { json } from 'stream/consumers';
+import { start } from 'repl';
 
 
 
@@ -15,6 +16,8 @@ let client: LanguageClient;
 //自动补全提供器  
 let completionProvider: vscode.Disposable | undefined;
 
+//当前文本  
+let currentGizDocument : vscode.TextDocument;
 
 
 //高亮   
@@ -59,7 +62,9 @@ export function activate(context: vscode.ExtensionContext) {
         },
         outputChannelName: 'Language Server Example',
         traceOutputChannel: vscode.window.createOutputChannel('Language Server Trace'),
-        
+        initializationOptions:{
+            // workspaceFolder: ((vscode.workspace.workspaceFolders != null) ? vscode.workspace.workspaceFolders[0].uri.toString() : null)
+        }
     };
 
     client = new LanguageClient(
@@ -77,7 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
         const isGizbox = vscode.window.activeTextEditor?.document.languageId === 'gizbox';
         if(isGizbox)
         {
-            vscode.window.showInformationMessage("进入新的Giz文档");
+            // vscode.window.showInformationMessage("进入新的Giz文档");
 
             //高亮刷新  
             setTimeout(() => {
@@ -106,23 +111,30 @@ export function activate(context: vscode.ExtensionContext) {
     //客户端启动  
     var promise = client.start();
 
+    //截获  
+    // client.onNotification("textDocument/publishDiagnostics", (params) => {
+    //     vscode.window.showInformationMessage("diagnostice received!");
+    // })
 
 
+    //启动2秒后刷新高亮  
+    setTimeout(() => {
+        TrySetCurrentGizTextDocument();
+        if(currentGizDocument != null){
+            SendHighlightRequest(currentGizDocument, {line:0, character:0});
+        }
+    }, 1000);
 
-    //测试字体装饰  
-    {
-        // const textDecorations: vscode.DecorationOptions[] = [];
-    
-        // const range = new vscode.Range(
-        //     new vscode.Position(1, 0),
-        //     new vscode.Position(1, 3)
-        // );
-        // const decoration = { range: range };
-        // textDecorations.push(decoration);
-        // // 应用不同的装饰
-        // let edi : any = vscode.window.activeTextEditor;
-        // edi.setDecorations(textHighlightDecoration, textDecorations);
-    }
+
+    //每10秒全量更新  
+    setInterval(() => {
+        TrySetCurrentGizTextDocument();
+        if(currentGizDocument != null)
+        {
+            FullContentUpdate();
+        }  
+
+    }, 10000);
 
 
     //文本改变事件监听  
@@ -158,8 +170,16 @@ export function activate(context: vscode.ExtensionContext) {
             
             // 如果输入分割字符，则发送补全、高亮请求
             const text = contentChanges[0].text;
-            if (text === '.' || text === ';' || /\s/.test(text)) {
+            const rangeLength = contentChanges[0].rangeLength;
+            if (rangeLength > 0 || text.endsWith('.')|| text.endsWith(';') || text.endsWith(':') || text.endsWith(' ') || text.endsWith('\n') || /\s/.test(text)) {
                 
+                setTimeout(() => {
+                    {
+                        const position = contentChanges[0].range.start;
+                        SendHighlightRequest(document, position);
+                    }
+                }, 100);
+
                 setTimeout(() => {
                     {
                         const position = contentChanges[0].range.start;
@@ -169,29 +189,18 @@ export function activate(context: vscode.ExtensionContext) {
                         };
                         
                         client.sendRequest('textDocument/completion', params).then((completionItems: any) => {
-                    
                             updateCompletionProvider(context, completionItems);
+
+                            //REW：立刻显示全部补全项（不等待输入首字母或者模糊字母才显示）    
+                            if(text.endsWith('.'))
+                            {
+                                vscode.commands.executeCommand('editor.action.triggerSuggest');
+                            }
                         });
+
+                        // vscode.window.showInformationMessage("Send: Completion");
                     }
                 }, 200);
-                setTimeout(() => {
-                    {
-                        const position = contentChanges[0].range.start;
-                        const params = {
-                            textDocument: { uri: document.uri.toString() },
-                            position: { line: position.line, character: position.character + 1 }
-                        };
-                        
-                        client.sendRequest('textDocument/documentHighlight', params).then((highlights) => {
-                            
-                            const editor = vscode.window.activeTextEditor;
-                            applyHighlights(editor, highlights);
-    
-                        }, error => {
-                            vscode.window.showInformationMessage(error);
-                        });
-                    }
-                }, 400);
 
             }
         }
@@ -199,8 +208,52 @@ export function activate(context: vscode.ExtensionContext) {
 
 }
 
+function TrySetCurrentGizTextDocument()
+{
+    const editor = vscode.window.activeTextEditor;
+    if(editor?.document.languageId === "gizbox")
+    {
+        currentGizDocument = editor.document;
+    }
+}
+
+function FullContentUpdate()
+{
+    const params = {
+        textDocument: 
+        { 
+            uri: currentGizDocument.uri.toString()
+        },
+        contentChanges: [
+            {
+                text: currentGizDocument.getText(),
+            }
+        ] 
+    };
+    client.sendNotification('textDocument/didChange', params);
+    
+    // vscode.window.showInformationMessage("Full Update");
+}
+
+function SendHighlightRequest(document: vscode.TextDocument, position : any)
+{
+    const params = {
+        textDocument: { uri: document.uri.toString() },
+        position: { line: position.line, character: position.character + 1 }
+    };
+    
+    client.sendRequest('textDocument/documentHighlight', params).then((highlights) => {
+        
+        const editor = vscode.window.activeTextEditor;
+        applyHighlights(editor, highlights);
+
+    }, error => {
+        vscode.window.showInformationMessage(error);
+    });
+}
+
 function applyHighlights(editor: any, highlights: unknown) {
-    if (Array.isArray(highlights))
+    if (Array.isArray(highlights) && highlights.length > 0)
     {
         const classNameDecorationOpts: vscode.DecorationOptions[] = [];
         const variableDecorationOpts: vscode.DecorationOptions[] = [];

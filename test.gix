@@ -1,12 +1,14 @@
-﻿import <"stdlib">  
+﻿import <"core">  
+import <"stdlib">  
 
 using Core;  
 using Console;
 using Collections;
 
-GC::Enable();      
+GC::Enable();
 
-void Test()
+class Person
 {
-}  
-Collections::List a = new Collections::List();
+    string name = "";  
+}
+Person sam = new Person();

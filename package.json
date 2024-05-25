@@ -35,9 +35,9 @@
     ],
     "themes": [
       {
-        "label": "Dark+",
+        "label": "Gizbox+",
         "uiTheme": "vs-dark",
-        "path": "./themes/default-theme.json"
+        "path": "./themes/gixbox-theme.json"
       }
     ],
     "grammars": [
@@ -48,6 +48,7 @@
       }
     ]
   },
+  
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -b",
