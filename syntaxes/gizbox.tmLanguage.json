@@ -6,6 +6,9 @@
 			"include": "#strings"
 		},
 		{
+			"include": "#comments"
+		},
+		{
 			"include": "#keywords"
 		}
 	],
@@ -21,6 +24,15 @@
 					"match": "\\b(bool|int|float|double|char|string|void)\\b"
 				}
 
+			]
+		},
+		
+		"comments": {
+			"patterns": [
+				{
+					"name": "comments.control.gizbox",
+					"match": "//[^\r\n]*"
+				}
 			]
 		},
 

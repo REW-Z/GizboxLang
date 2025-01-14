@@ -63,7 +63,7 @@ export function activate(context: vscode.ExtensionContext) {
         outputChannelName: 'Language Server Example',
         traceOutputChannel: vscode.window.createOutputChannel('Language Server Trace'),
         initializationOptions:{
-            // workspaceFolder: ((vscode.workspace.workspaceFolders != null) ? vscode.workspace.workspaceFolders[0].uri.toString() : null)
+            //...其他信息    
         }
     };
 
@@ -111,10 +111,10 @@ export function activate(context: vscode.ExtensionContext) {
     //客户端启动  
     var promise = client.start();
 
-    //截获  
-    // client.onNotification("textDocument/publishDiagnostics", (params) => {
-    //     vscode.window.showInformationMessage("diagnostice received!");
-    // })
+    //截获Log  
+    client.onNotification("debug/log", (params) => {
+        vscode.window.showInformationMessage("stream log:\n" + params.text);
+    })
 
 
     //启动2秒后刷新高亮  

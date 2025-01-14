@@ -393,6 +393,12 @@
             "settings": {
                 "foreground": "#945e45" 
             }
+        },
+        {
+            "scope": "comments.control.gizbox",
+            "settings": {
+                "foreground": "#226622" 
+            }
         }
     ]
 }

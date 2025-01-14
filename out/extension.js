@@ -4,7 +4,7 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const client_1 = require("./client");
 function activate(context) {
-    vscode.window.showInformationMessage('HelloWorld !');
+    vscode.window.showInformationMessage('Gizbox Extension Activated !');
     (0, client_1.activate)(context);
 }
 exports.activate = activate;
