@@ -1,0 +1,56 @@
+﻿import <"core">
+import <"stdlib">
+import <"gizbox_u3d_wrapper">
+
+using Core;  
+using Console;
+
+class Timer
+{
+    int count = 0;
+    void Tick()
+    {
+        this.count += 1;
+    }
+}
+
+//this  
+UnityEngine::GameObject thisGO = null;
+
+//Fields  
+UnityEngine::Transform transfm = null; 
+Timer timer = new Timer();
+
+//Init  
+void Init(UnityEngine::GameObject bindGO)
+{
+    thisGO = bindGO;
+    Console::Log("GizBehaviour Inited!");
+}
+
+//U3D Start  
+void Start()
+{
+    transfm = thisGO.transform();
+}
+
+//U3D Update  
+void Update()
+{
+    timer.Tick();
+    Console::Log("current frame:" + (string)timer.count);
+
+    UnityEngine::Vector3 posTmp = transfm.position;
+    posTmp.x += 0.1f; 
+    transfm.position = posTmp;
+
+    delete posTmp;
+    //GC::Collect();
+}
+
+void OnDestroy()
+{
+    delete thisGO;
+    delete transfm;
+    delete timer;
+}

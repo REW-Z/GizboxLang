@@ -1,15 +1,18 @@
 ﻿import <"core">  
 import <"stdlib">  
 
+
 using Core;  
 using Console;
 using Collections;
 
 GC::Enable();
 
+Console::Log("SAA");
+
 class Person
 {
-    string name = "";  
+    string name = "";
 }
 //afff
 Person sam = new Person();

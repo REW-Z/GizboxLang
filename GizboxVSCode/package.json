@@ -71,9 +71,5 @@
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1"
-  },
-  "files": [
-    "bin",
-    "node_modules/vscode-languageclient"
-  ]
+  }
 }
