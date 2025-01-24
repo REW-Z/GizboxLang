@@ -35,7 +35,7 @@
     ],
     "themes": [
       {
-        "label": "Gizbox+",
+        "label": "Gizbox",
         "uiTheme": "vs-dark",
         "path": "./themes/gixbox-theme.json"
       }

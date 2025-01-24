@@ -17,7 +17,7 @@
 			"patterns": [
 				{
 					"name": "keyword.control.gizbox",
-					"match": "\\b(namespace|class|import|using|if|else|while|for|return|break|delete|new|this)\\b"
+					"match": "\\b(namespace|class|import|using|if|else|while|for|return|break|delete|new|this|const|extern)\\b"
 				},
 				{
 					"name": "storage.type.gizbox",

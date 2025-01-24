@@ -26,18 +26,18 @@ const literalDecoration = vscode.window.createTextEditorDecorationType({
 });
 // 命名空间黑
 const namespaceDecoration = vscode.window.createTextEditorDecorationType({
-    color: 'rgba(90, 90, 90, 0.9)'
+    color: 'rgba(100, 100, 100, 0.9)'
 });
 //激活扩展  
 function activate(context) {
     // 确保路径正确
-    const serverModule = context.asAbsolutePath(path.join('bin', 'GizboxLangLSP.dll'));
+    const serverModule = context.asAbsolutePath(path.join('bin', 'GizboxLSP.dll'));
     const serverOptions = {
         run: { command: 'dotnet', args: [serverModule] },
         debug: { command: 'dotnet', args: [serverModule] }
     };
     const clientOptions = {
-        documentSelector: [{ scheme: 'file', language: 'gizbox' }],
+        documentSelector: [{ scheme: 'file', language: 'plaintext' }],
         synchronize: {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/.gix')
         },
@@ -78,13 +78,13 @@ function activate(context) {
     client.onNotification("debug/log", (params) => {
         vscode.window.showInformationMessage("stream log:\n" + params.text);
     });
-    //启动2秒后刷新高亮  
+    //启动...秒后刷新高亮  
     setTimeout(() => {
         TrySetCurrentGizTextDocument();
         if (currentGizDocument != null) {
             SendHighlightRequest(currentGizDocument, { line: 0, character: 0 });
         }
-    }, 1000);
+    }, 2000);
     //每10秒全量更新  
     setInterval(() => {
         TrySetCurrentGizTextDocument();

@@ -36,7 +36,7 @@ const literalDecoration = vscode.window.createTextEditorDecorationType({
 });
 // 命名空间黑
 const namespaceDecoration = vscode.window.createTextEditorDecorationType({
-    color: 'rgba(90, 90, 90, 0.9)'
+    color: 'rgba(100, 100, 100, 0.9)'
 });
 
 
@@ -46,17 +46,17 @@ const namespaceDecoration = vscode.window.createTextEditorDecorationType({
 //激活扩展  
 export function activate(context: vscode.ExtensionContext) {
 
-
     // 确保路径正确
-    const serverModule = context.asAbsolutePath(path.join('bin', 'GizboxLangLSP.dll'));
+    const serverModule = context.asAbsolutePath(path.join('bin', 'GizboxLSP.dll'));
 
     const serverOptions: ServerOptions = {
         run: { command: 'dotnet', args: [serverModule] },
         debug: { command: 'dotnet', args: [serverModule] }
     };
 
+
     const clientOptions: LanguageClientOptions = {
-        documentSelector: [{ scheme: 'file', language: 'gizbox' }],
+        documentSelector: [{ scheme: 'file', language: 'plaintext' }],
         synchronize: {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/.gix')
         },
@@ -76,6 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
     
+
     //活动的编辑器文本打开事件
     //vscode.workspace.onDidOpenTextDocument
     vscode.window.onDidChangeActiveTextEditor((teditor : any) => {
@@ -87,6 +88,7 @@ export function activate(context: vscode.ExtensionContext) {
             //高亮刷新  
             setTimeout(() => {
                 if (vscode.window.activeTextEditor?.document != null) {
+                    
                     const params = {
                         textDocument: { uri: vscode.window.activeTextEditor?.document.uri.toString() },
                         position: { line: 0, character: 0 }
@@ -117,14 +119,13 @@ export function activate(context: vscode.ExtensionContext) {
     })
 
 
-    //启动2秒后刷新高亮  
+    //启动...秒后刷新高亮  
     setTimeout(() => {
         TrySetCurrentGizTextDocument();
         if(currentGizDocument != null){
             SendHighlightRequest(currentGizDocument, {line:0, character:0});
         }
-    }, 1000);
-
+    }, 2000);
 
     //每10秒全量更新  
     setInterval(() => {
