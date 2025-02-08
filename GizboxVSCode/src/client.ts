@@ -6,8 +6,8 @@ import { LanguageClient, ServerOptions, TransportKind} from 'vscode-languageclie
 import { channel } from 'diagnostics_channel';
 import { json } from 'stream/consumers';
 import { start } from 'repl';
-
-
+import { stringify } from 'querystring';
+import { log } from 'console';
 
 
 //客户端  
@@ -39,7 +39,14 @@ const namespaceDecoration = vscode.window.createTextEditorDecorationType({
     color: 'rgba(100, 100, 100, 0.9)'
 });
 
+//状态  
+let updateHightlightCallback : () => void;
+let updateCompletionCallback : () => void;
+let timerUpdateHightlight : number = -1;
+let timerUpdateCompletion : number = -1;
 
+//控制台  
+let output : vscode.OutputChannel = vscode.window.createOutputChannel("Gizbox");
 
 
 
@@ -56,7 +63,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
     const clientOptions: LanguageClientOptions = {
-        documentSelector: [{ scheme: 'file', language: 'plaintext' }],
+        documentSelector: [{ scheme: 'file', language: 'text/plain' }],
         synchronize: {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/.gix')
         },
@@ -95,7 +102,7 @@ export function activate(context: vscode.ExtensionContext) {
                     };
                     client.sendRequest('textDocument/documentHighlight', params).then((highlights) => {
                         const editor = vscode.window.activeTextEditor;
-                        applyHighlights(editor, highlights);
+                        ApplyHighlights(editor, highlights);
 
                         // vscode.window.showInformationMessage(JSON.stringify(highlights));
                     }, error => {
@@ -113,29 +120,14 @@ export function activate(context: vscode.ExtensionContext) {
     //客户端启动  
     var promise = client.start();
 
-    //截获Log  
-    client.onNotification("debug/log", (params) => {
-        vscode.window.showInformationMessage("stream log:\n" + params.text);
-    })
+    //Start  
+    ClientStart();
 
-
-    //启动...秒后刷新高亮  
-    setTimeout(() => {
-        TrySetCurrentGizTextDocument();
-        if(currentGizDocument != null){
-            SendHighlightRequest(currentGizDocument, {line:0, character:0});
-        }
-    }, 2000);
-
-    //每10秒全量更新  
+    //开始Update  
+    const deltatime = 100;
     setInterval(() => {
-        TrySetCurrentGizTextDocument();
-        if(currentGizDocument != null)
-        {
-            FullContentUpdate();
-        }  
-
-    }, 10000);
+        ClientUpdate(deltatime);
+    }, deltatime);
 
 
     //文本改变事件监听  
@@ -149,66 +141,142 @@ export function activate(context: vscode.ExtensionContext) {
 
         if (contentChanges.length > 0) {
             
-            // vscode.window.showInformationMessage("ChangeCount:" + contentChanges.length);
+            vscode.window.showInformationMessage("****contentChanges***\ncount:" + contentChanges.length);
 
-            // //手动同步文本(改为自动增量同步)    
-            // const params = {
-            //     textDocument: { uri: event.document.uri.toString() },
-            //     contentChanges: contentChanges.map(change => ({
-            //         range: {
-            //             start: { line: change.range.start.line, character: change.range.start.character },
-            //             end: { line: change.range.end.line, character: change.range.end.character }
-            //         },
-            //         rangeLength: change.rangeLength,
-            //         text: change.text,
-            //         debug:"didChange: start line:" + change.range.start.line
-            //     }))
-            // };
-            
-            // vscode.window.showInformationMessage("Changes:" + JSON.stringify(params.contentChanges));
-            // client.sendNotification('textDocument/didChange', params);
-                
-            
-            // 如果输入分割字符，则发送补全、高亮请求
-            const text = contentChanges[0].text;
-            const rangeLength = contentChanges[0].rangeLength;
-            if (rangeLength > 0 || text.endsWith('.')|| text.endsWith(';') || text.endsWith(':') || text.endsWith(' ') || text.endsWith('\n') || /\s/.test(text)) {
-                
-                setTimeout(() => {
-                    {
-                        const position = contentChanges[0].range.start;
+            //增量同步 
+            const params = {
+                textDocument: { uri: event.document.uri.toString() },
+                contentChanges: contentChanges.map(change => ({
+                    range: {
+                        start: { line: change.range.start.line, character: change.range.start.character },
+                        end: { line: change.range.end.line, character: change.range.end.character }
+                    },
+                    rangeLength: change.rangeLength,
+                    text: change.text,
+                    debug:"didChange: start line:" + change.range.start.line
+                }))
+            };
+            client.sendNotification('textDocument/didChange', params);
+
+
+
+            const lastChange = contentChanges[contentChanges.length - 1];
+            //update中  请求Highlight   
+            {
+                if (timerUpdateHightlight < 0.0) {
+                    updateHightlightCallback = (() => {
+                        const position = lastChange.range.end;
                         SendHighlightRequest(document, position);
-                    }
-                }, 100);
-
-                setTimeout(() => {
-                    {
-                        const position = contentChanges[0].range.start;
-                        const params = {
-                            textDocument: { uri: document.uri.toString() },
-                            position: { line: position.line, character: position.character + 1 }
-                        };
-                        
-                        client.sendRequest('textDocument/completion', params).then((completionItems: any) => {
-                            updateCompletionProvider(context, completionItems);
-
-                            //REW：立刻显示全部补全项（不等待输入首字母或者模糊字母才显示）    
-                            if(text.endsWith('.'))
-                            {
-                                vscode.commands.executeCommand('editor.action.triggerSuggest');
-                            }
-                        });
-
-                        // vscode.window.showInformationMessage("Send: Completion");
-                    }
-                }, 200);
-
+                    });
+                }
+                timerUpdateHightlight = 500;
             }
+
+
+            //update中  请求Completion   
+            {
+                if (timerUpdateCompletion < 0.0) {
+                    updateCompletionCallback = (() => {
+                        {
+                            const position = lastChange.range.start;
+                            const params = {
+                                textDocument: { uri: document.uri.toString() },
+                                position: { line: position.line, character: position.character + 1 }
+                            };
+                            
+                            client.sendRequest('textDocument/completion', params).then((completionItems: any) => {
+                                UpdateCompletionProvider(context, completionItems);
+        
+                                //立刻显示全部补全项（不等待输入首字母或者模糊字母才显示）    
+                                if(lastChange.text.endsWith('.'))
+                                {
+                                    vscode.commands.executeCommand('editor.action.triggerSuggest');
+                                }
+                            });
+                        } 
+                    });
+                }
+                timerUpdateCompletion = 500;
+            }
+
+
+            // // 如果输入分割字符  补全  
+            // const text = contentChanges[0].text;
+            // const rangeLength = contentChanges[0].rangeLength;
+            // if (rangeLength > 0 || text.endsWith('.')|| text.endsWith(';') || text.endsWith(':') || text.endsWith(' ') || text.endsWith('\n') || /\s/.test(text)) {
+                    
+            // }
         }
     });
 
 }
 
+function ClientStart()
+{    
+    output.appendLine("Client Start");
+
+    //截获Log  
+    client.onNotification("debug/log", (params) => {
+        output.appendLine("server log >>> " + params.text);
+    })
+
+    //启动...秒后刷新高亮  
+    setTimeout(() => {
+        TrySetCurrentGizTextDocument();
+        if(currentGizDocument != null){
+            SendHighlightRequest(currentGizDocument, {line:0, character:0});
+        }
+    }, 2000);
+
+    output.appendLine("hightlight刷新");
+
+    //初始全量更新一次   
+    setTimeout(() => {
+        output.appendLine("初始全量更新...");
+        FullContentUpdate();
+        output.appendLine("初始全量更新完成...");
+    }, 1000);
+
+    output.appendLine("计时全量更新");
+
+    //每10秒全量更新  
+    setInterval(() => {
+        TrySetCurrentGizTextDocument();
+        if(currentGizDocument != null)
+        {
+            FullContentUpdate();
+        }  
+
+    }, 10000);
+}
+
+//Update  
+function ClientUpdate(deltatime : number)
+{
+    if(timerUpdateHightlight > 0)
+    {
+        timerUpdateHightlight -= deltatime;
+
+        if(timerUpdateHightlight <= 0)
+        {
+            updateHightlightCallback();
+            timerUpdateHightlight = -1;
+        }
+    }
+
+    if(timerUpdateCompletion > 0)
+    {
+        timerUpdateCompletion -= deltatime;
+        if(timerUpdateCompletion <= 0)
+        {
+            updateCompletionCallback();
+            timerUpdateCompletion = -1;
+        }
+    }
+}
+
+
+//设置当前文档  
 function TrySetCurrentGizTextDocument()
 {
     const editor = vscode.window.activeTextEditor;
@@ -218,6 +286,7 @@ function TrySetCurrentGizTextDocument()
     }
 }
 
+//全量更新  
 function FullContentUpdate()
 {
     const params = {
@@ -236,6 +305,7 @@ function FullContentUpdate()
     // vscode.window.showInformationMessage("Full Update");
 }
 
+//Highlight请求  
 function SendHighlightRequest(document: vscode.TextDocument, position : any)
 {
     const params = {
@@ -246,16 +316,18 @@ function SendHighlightRequest(document: vscode.TextDocument, position : any)
     client.sendRequest('textDocument/documentHighlight', params).then((highlights) => {
         
         const editor = vscode.window.activeTextEditor;
-        applyHighlights(editor, highlights);
+        ApplyHighlights(editor, highlights);
 
     }, error => {
         vscode.window.showInformationMessage(error);
     });
 }
 
-function applyHighlights(editor: any, highlights: unknown) {
+//应用Highlight  
+function ApplyHighlights(editor: any, highlights: unknown) {
     if (Array.isArray(highlights) && highlights.length > 0)
     {
+        output.appendLine("---Apply Highlights  length:" + highlights.length);
         const classNameDecorationOpts: vscode.DecorationOptions[] = [];
         const variableDecorationOpts: vscode.DecorationOptions[] = [];
         const literalDecorationOpts: vscode.DecorationOptions[] = [];
@@ -302,12 +374,15 @@ function applyHighlights(editor: any, highlights: unknown) {
 }
 
 //补全提供器更新  
-function updateCompletionProvider(context: vscode.ExtensionContext, completionItems: any) {
+function UpdateCompletionProvider(context: vscode.ExtensionContext, completionItems: any) {
 
     // 将响应中的补全项转换为 VS Code 的 CompletionItem 格式
     const completionList = completionItems.items.map((item: any) => {
         return new vscode.CompletionItem(item.label, vscode.CompletionItemKind.Text);
     });
+
+    
+    output.appendLine("---Apply Completion  length:" + completionList.length);
 
     // 如果已经存在补全提供者，则清理它
     if (completionProvider) {
