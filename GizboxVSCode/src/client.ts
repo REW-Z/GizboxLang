@@ -159,7 +159,6 @@ export function activate(context: vscode.ExtensionContext) {
             client.sendNotification('textDocument/didChange', params);
 
 
-
             const lastChange = contentChanges[contentChanges.length - 1];
             //update中  请求Highlight   
             {
@@ -235,7 +234,7 @@ function ClientStart()
         output.appendLine("初始全量更新...");
         FullContentUpdate();
         output.appendLine("初始全量更新完成...");
-    }, 1000);
+    }, 3000);
 
     output.appendLine("计时全量更新");
 
