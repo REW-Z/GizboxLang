@@ -67,16 +67,16 @@ export function activate(context: vscode.ExtensionContext) {
         synchronize: {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/.gix')
         },
-        outputChannelName: 'Language Server Example',
-        traceOutputChannel: vscode.window.createOutputChannel('Language Server Trace'),
+        outputChannelName: 'GizboxLang Server',
+        traceOutputChannel: vscode.window.createOutputChannel('GizboxLang Server Trace'),
         initializationOptions:{
             //...其他信息    
         }
     };
 
     client = new LanguageClient(
-        'languageServerExample',
-        'Language Server Example',
+        'langServer',
+        'GizboxLang Server',
         serverOptions,
         clientOptions
     );
@@ -157,6 +157,8 @@ export function activate(context: vscode.ExtensionContext) {
                 }))
             };
             client.sendNotification('textDocument/didChange', params);
+            output.appendLine("增量更新");
+            // output.appendLine("send didChangeParam:\n\n" + JSON.stringify(params));
 
 
             const lastChange = contentChanges[contentChanges.length - 1];
@@ -236,7 +238,6 @@ function ClientStart()
         output.appendLine("初始全量更新完成...");
     }, 3000);
 
-    output.appendLine("计时全量更新");
 
     //每10秒全量更新  
     setInterval(() => {
@@ -288,6 +289,7 @@ function TrySetCurrentGizTextDocument()
 //全量更新  
 function FullContentUpdate()
 {
+    output.appendLine("计时全量更新");
     const params = {
         textDocument: 
         { 
@@ -377,7 +379,12 @@ function UpdateCompletionProvider(context: vscode.ExtensionContext, completionIt
 
     // 将响应中的补全项转换为 VS Code 的 CompletionItem 格式
     const completionList = completionItems.items.map((item: any) => {
-        return new vscode.CompletionItem(item.label, vscode.CompletionItemKind.Text);
+        // return new vscode.CompletionItem(item.label, vscode.CompletionItemKind.Text);
+        let vsitm = new vscode.CompletionItem(item.label, item.kind);
+        vsitm.detail = item.detail;
+        vsitm.documentation = item.documentation;
+        vsitm.insertText = item.insertText;
+        return vsitm;
     });
 
     

@@ -48,13 +48,13 @@ function activate(context) {
         synchronize: {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/.gix')
         },
-        outputChannelName: 'Language Server Example',
-        traceOutputChannel: vscode.window.createOutputChannel('Language Server Trace'),
+        outputChannelName: 'GizboxLang Server',
+        traceOutputChannel: vscode.window.createOutputChannel('GizboxLang Server Trace'),
         initializationOptions: {
         //...其他信息    
         }
     };
-    client = new node_1.LanguageClient('languageServerExample', 'Language Server Example', serverOptions, clientOptions);
+    client = new node_1.LanguageClient('langServer', 'GizboxLang Server', serverOptions, clientOptions);
     //活动的编辑器文本打开事件
     //vscode.workspace.onDidOpenTextDocument
     vscode.window.onDidChangeActiveTextEditor((teditor) => {
@@ -111,7 +111,8 @@ function activate(context) {
                 }))
             };
             client.sendNotification('textDocument/didChange', params);
-            output.appendLine(JSON.stringify(params));
+            output.appendLine("增量更新");
+            // output.appendLine("send didChangeParam:\n\n" + JSON.stringify(params));
             const lastChange = contentChanges[contentChanges.length - 1];
             //update中  请求Highlight   
             {
@@ -174,7 +175,6 @@ function ClientStart() {
         FullContentUpdate();
         output.appendLine("初始全量更新完成...");
     }, 3000);
-    output.appendLine("计时全量更新");
     //每10秒全量更新  
     setInterval(() => {
         TrySetCurrentGizTextDocument();
@@ -209,6 +209,7 @@ function TrySetCurrentGizTextDocument() {
 }
 //全量更新  
 function FullContentUpdate() {
+    output.appendLine("计时全量更新");
     const params = {
         textDocument: {
             uri: currentGizDocument.uri.toString()
@@ -280,7 +281,12 @@ function ApplyHighlights(editor, highlights) {
 function UpdateCompletionProvider(context, completionItems) {
     // 将响应中的补全项转换为 VS Code 的 CompletionItem 格式
     const completionList = completionItems.items.map((item) => {
-        return new vscode.CompletionItem(item.label, vscode.CompletionItemKind.Text);
+        // return new vscode.CompletionItem(item.label, vscode.CompletionItemKind.Text);
+        let vsitm = new vscode.CompletionItem(item.label, item.kind);
+        vsitm.detail = item.detail;
+        vsitm.documentation = item.documentation;
+        vsitm.insertText = item.insertText;
+        return vsitm;
     });
     output.appendLine("---Apply Completion  length:" + completionList.length);
     // 如果已经存在补全提供者，则清理它
