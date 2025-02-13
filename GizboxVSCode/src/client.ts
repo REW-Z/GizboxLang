@@ -413,3 +413,7 @@ export function deactivate(): Thenable<void> | undefined {
     }
     return client.stop();
 }
+
+
+//1. 有缩进时无法找到标识符
+//2. 服务器有时会自动中止  
