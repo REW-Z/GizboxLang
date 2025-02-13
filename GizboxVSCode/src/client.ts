@@ -106,7 +106,8 @@ export function activate(context: vscode.ExtensionContext) {
 
                         // vscode.window.showInformationMessage(JSON.stringify(highlights));
                     }, error => {
-                        vscode.window.showInformationMessage(error);
+                        // vscode.window.showInformationMessage(error);
+                        output.appendLine("error:" + error);
                     });
                 }
             }, 500);
@@ -141,8 +142,6 @@ export function activate(context: vscode.ExtensionContext) {
 
         if (contentChanges.length > 0) {
             
-            vscode.window.showInformationMessage("****contentChanges***\ncount:" + contentChanges.length);
-
             //增量同步 
             const params = {
                 textDocument: { uri: event.document.uri.toString() },
@@ -167,7 +166,7 @@ export function activate(context: vscode.ExtensionContext) {
                 if (timerUpdateHightlight < 0.0) {
                     updateHightlightCallback = (() => {
                         const position = lastChange.range.end;
-                        SendHighlightRequest(document, position);
+                        Request_Highlight(document, position);
                     });
                 }
                 timerUpdateHightlight = 500;
@@ -186,7 +185,7 @@ export function activate(context: vscode.ExtensionContext) {
                             };
                             
                             client.sendRequest('textDocument/completion', params).then((completionItems: any) => {
-                                UpdateCompletionProvider(context, completionItems);
+                                ApplyCompletionToProvider(context, completionItems);
         
                                 //立刻显示全部补全项（不等待输入首字母或者模糊字母才显示）    
                                 if(lastChange.text.endsWith('.'))
@@ -221,32 +220,45 @@ function ClientStart()
         output.appendLine("server log >>> " + params.text);
     })
 
-    //启动...秒后刷新高亮  
-    setTimeout(() => {
-        TrySetCurrentGizTextDocument();
-        if(currentGizDocument != null){
-            SendHighlightRequest(currentGizDocument, {line:0, character:0});
-        }
-    }, 2000);
 
     output.appendLine("hightlight刷新");
 
-    //初始全量更新一次   
+    //初始全量更新一次(同时刷新高亮)   
     setTimeout(() => {
         output.appendLine("初始全量更新...");
-        FullContentUpdate();
-        output.appendLine("初始全量更新完成...");
-    }, 3000);
-
-
-    //每10秒全量更新  
-    setInterval(() => {
         TrySetCurrentGizTextDocument();
         if(currentGizDocument != null)
         {
-            FullContentUpdate();
-        }  
+            Request_FullContentUpdate();
+            output.appendLine("初始全量更新完成...");
+        }
+        else
+        {
+            output.appendLine("初始全量更新失败, 当前文档为null");
+        }
+    }, 2500);
+    setTimeout(() => {
+        if(currentGizDocument != null)
+        {
+            Request_Highlight(currentGizDocument, {line:0, character:0});
+        }
+    }, 3500);
 
+
+    //每10秒全量更新(同时刷新高亮)     
+    setInterval(() => {
+        output.appendLine("计时全量更新");
+        TrySetCurrentGizTextDocument();
+        if(currentGizDocument != null)
+        {
+            Request_FullContentUpdate();
+            Request_Highlight(currentGizDocument, {line:0, character:0});
+            output.appendLine("计时全量更新成功...");
+        }
+        else
+        {
+            output.appendLine("计时全量更新失败, 当前文档为空...");
+        }
     }, 10000);
 }
 
@@ -287,9 +299,8 @@ function TrySetCurrentGizTextDocument()
 }
 
 //全量更新  
-function FullContentUpdate()
+function Request_FullContentUpdate()
 {
-    output.appendLine("计时全量更新");
     const params = {
         textDocument: 
         { 
@@ -307,7 +318,7 @@ function FullContentUpdate()
 }
 
 //Highlight请求  
-function SendHighlightRequest(document: vscode.TextDocument, position : any)
+function Request_Highlight(document: vscode.TextDocument, position : any)
 {
     const params = {
         textDocument: { uri: document.uri.toString() },
@@ -320,7 +331,8 @@ function SendHighlightRequest(document: vscode.TextDocument, position : any)
         ApplyHighlights(editor, highlights);
 
     }, error => {
-        vscode.window.showInformationMessage(error);
+        // vscode.window.showInformationMessage(error);
+        output.appendLine("request highlight err:" + error);
     });
 }
 
@@ -375,7 +387,7 @@ function ApplyHighlights(editor: any, highlights: unknown) {
 }
 
 //补全提供器更新  
-function UpdateCompletionProvider(context: vscode.ExtensionContext, completionItems: any) {
+function ApplyCompletionToProvider(context: vscode.ExtensionContext, completionItems: any) {
 
     // 将响应中的补全项转换为 VS Code 的 CompletionItem 格式
     const completionList = completionItems.items.map((item: any) => {
