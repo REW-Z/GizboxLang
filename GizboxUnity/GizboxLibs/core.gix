@@ -28,12 +28,30 @@ namespace Core
 
 }
 
+namespace Core::Boolean
+{
+	const int size = 8;
+}
+namespace Core::Integer
+{
+	const int size = 32;
+}
+namespace Core::Float
+{
+	const int size = 32;
+}
+namespace Core::Double
+{
+	const int size = 64;
+}
+
 namespace Core::GC
 {
 	extern void Enable();
 	extern void Disable();
 	extern void Collect();
 }
+
 
 namespace Console
 {

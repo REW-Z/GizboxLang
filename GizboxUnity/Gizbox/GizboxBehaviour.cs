@@ -16,14 +16,13 @@ public class GizboxBehaviour : MonoBehaviour
     private void Awake()
     {
         engine = new Gizbox.ScriptEngine.ScriptEngine();
-        engine.AddLibSearchDirectory(GizboxUnity.baseDirectory);
+        engine.AddLibSearchDirectory(GizboxUnity.GizboxLibDirectory);
         engine.csharpInteropContext.ConfigExternCallClasses(new System.Type[] {
             typeof(GizboxUnityExampleInterop),
             typeof(gizbox_u3d_wrapper),
             });
 
-
-        string scriptPath = GizboxUnity.baseDirectory + "/" + gizboxScriptName;
+        string scriptPath = GizboxUnity.GizboxLibDirectory + "/" + gizboxScriptName;
 
         if(System.IO.File.Exists(scriptPath))
         {
@@ -31,7 +30,7 @@ public class GizboxBehaviour : MonoBehaviour
             var il = GizboxUnity.Compile(source);
             if(il != null)
             {
-                engine.AddLibSearchDirectory(GizboxUnity.baseDirectory);
+                engine.AddLibSearchDirectory(GizboxUnity.GizboxLibDirectory);
                 engine.Execute(il);
                 engine.Call("Init", this.gameObject);
 

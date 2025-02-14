@@ -1,0 +1,21 @@
+﻿import <"core">
+import <"stdlib">
+import <"gizbox_u3d_wrapper">
+
+using Core;  
+using Console;
+using UnityEngine;
+
+namespace Savery
+{
+    class SaveryGizbox
+    {
+        int version = 100; 
+    }
+}
+
+void Test()
+{
+    Savery::SaveryGizbox inst = new Savery::SaveryGizbox();
+    Console::Log("Testing Version:" + (string)inst.version); 
+}

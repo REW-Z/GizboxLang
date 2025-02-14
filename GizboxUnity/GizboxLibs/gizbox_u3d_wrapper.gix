@@ -1,0 +1,2182 @@
+import <"core">
+import <"stdlib">
+
+extern void GizboxUnityExampleInterop_Console__Log_Static(string arg0);
+extern UnityEngine::Object GizboxUnityExampleInterop_FindObjectOfType_Static(string arg0);
+
+
+
+class GizboxUnityExampleInterop
+{
+}
+
+namespace GizboxUnityExampleInterop
+{
+	void Console__Log(string arg0)
+	{
+		GizboxUnityExampleInterop_Console__Log_Static(arg0);
+	}
+	UnityEngine::Object FindObjectOfType(string arg0)
+	{
+		return GizboxUnityExampleInterop_FindObjectOfType_Static(arg0);
+	}
+}
+
+
+extern UnityEngine::Object UnityEngine__Object_Instantiate_Static(UnityEngine::Object arg0, UnityEngine::Vector3 arg1, UnityEngine::Quaternion arg2);
+extern UnityEngine::Object UnityEngine__Object_Instantiate_Static(UnityEngine::Object arg0, UnityEngine::Vector3 arg1, UnityEngine::Quaternion arg2, UnityEngine::Transform arg3);
+extern UnityEngine::Object UnityEngine__Object_Instantiate_Static(UnityEngine::Object arg0);
+extern UnityEngine::Object UnityEngine__Object_Instantiate_Static(UnityEngine::Object arg0, UnityEngine::Transform arg1);
+extern UnityEngine::Object UnityEngine__Object_Instantiate_Static(UnityEngine::Object arg0, UnityEngine::Transform arg1, bool arg2);
+extern void UnityEngine__Object_Destroy_Static(UnityEngine::Object arg0, float arg1);
+extern void UnityEngine__Object_Destroy_Static(UnityEngine::Object arg0);
+extern void UnityEngine__Object_DestroyImmediate_Static(UnityEngine::Object arg0, bool arg1);
+extern void UnityEngine__Object_DestroyImmediate_Static(UnityEngine::Object arg0);
+extern void UnityEngine__Object_DontDestroyOnLoad_Static(UnityEngine::Object arg0);
+extern string UnityEngine__Object_get_name(UnityEngine::Object unityengine__object);
+extern void UnityEngine__Object_set_name(UnityEngine::Object unityengine__object, string newv);
+extern int UnityEngine__Object_get_hideFlags(UnityEngine::Object unityengine__object);
+extern void UnityEngine__Object_set_hideFlags(UnityEngine::Object unityengine__object, int newv);
+extern int UnityEngine__Object_GetInstanceID(UnityEngine::Object pthis);
+extern int UnityEngine__Object_GetHashCode(UnityEngine::Object pthis);
+extern string UnityEngine__Object_ToString(UnityEngine::Object pthis);
+
+
+
+class UnityEngine::Object
+{
+	string name()
+	{
+		return UnityEngine__Object_get_name(this);
+	}
+	void name(string newv)
+	{
+		UnityEngine__Object_set_name(this, newv);
+	}
+	int hideFlags()
+	{
+		return UnityEngine__Object_get_hideFlags(this);
+	}
+	void hideFlags(int newv)
+	{
+		UnityEngine__Object_set_hideFlags(this, newv);
+	}
+	int GetInstanceID()
+	{
+		return UnityEngine__Object_GetInstanceID(this);
+	}
+	int GetHashCode()
+	{
+		return UnityEngine__Object_GetHashCode(this);
+	}
+	string ToString()
+	{
+		return UnityEngine__Object_ToString(this);
+	}
+}
+
+namespace UnityEngine::Object
+{
+	UnityEngine::Object Instantiate(UnityEngine::Object arg0, UnityEngine::Vector3 arg1, UnityEngine::Quaternion arg2)
+	{
+		return UnityEngine__Object_Instantiate_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Object Instantiate(UnityEngine::Object arg0, UnityEngine::Vector3 arg1, UnityEngine::Quaternion arg2, UnityEngine::Transform arg3)
+	{
+		return UnityEngine__Object_Instantiate_Static(arg0, arg1, arg2, arg3);
+	}
+	UnityEngine::Object Instantiate(UnityEngine::Object arg0)
+	{
+		return UnityEngine__Object_Instantiate_Static(arg0);
+	}
+	UnityEngine::Object Instantiate(UnityEngine::Object arg0, UnityEngine::Transform arg1)
+	{
+		return UnityEngine__Object_Instantiate_Static(arg0, arg1);
+	}
+	UnityEngine::Object Instantiate(UnityEngine::Object arg0, UnityEngine::Transform arg1, bool arg2)
+	{
+		return UnityEngine__Object_Instantiate_Static(arg0, arg1, arg2);
+	}
+	void Destroy(UnityEngine::Object arg0, float arg1)
+	{
+		UnityEngine__Object_Destroy_Static(arg0, arg1);
+	}
+	void Destroy(UnityEngine::Object arg0)
+	{
+		UnityEngine__Object_Destroy_Static(arg0);
+	}
+	void DestroyImmediate(UnityEngine::Object arg0, bool arg1)
+	{
+		UnityEngine__Object_DestroyImmediate_Static(arg0, arg1);
+	}
+	void DestroyImmediate(UnityEngine::Object arg0)
+	{
+		UnityEngine__Object_DestroyImmediate_Static(arg0);
+	}
+	void DontDestroyOnLoad(UnityEngine::Object arg0)
+	{
+		UnityEngine__Object_DontDestroyOnLoad_Static(arg0);
+	}
+}
+
+
+extern float UnityEngine__Input_GetAxis_Static(string arg0);
+extern float UnityEngine__Input_GetAxisRaw_Static(string arg0);
+extern bool UnityEngine__Input_GetButton_Static(string arg0);
+extern bool UnityEngine__Input_GetButtonDown_Static(string arg0);
+extern bool UnityEngine__Input_GetButtonUp_Static(string arg0);
+extern bool UnityEngine__Input_GetMouseButton_Static(int arg0);
+extern bool UnityEngine__Input_GetMouseButtonDown_Static(int arg0);
+extern bool UnityEngine__Input_GetMouseButtonUp_Static(int arg0);
+extern void UnityEngine__Input_ResetInputAxes_Static();
+extern bool UnityEngine__Input_IsJoystickPreconfigured_Static(string arg0);
+extern UnityEngine::Touch UnityEngine__Input_GetTouch_Static(int arg0);
+extern UnityEngine::AccelerationEvent UnityEngine__Input_GetAccelerationEvent_Static(int arg0);
+extern bool UnityEngine__Input_GetKey_Static(int arg0);
+extern bool UnityEngine__Input_GetKey_Static(string arg0);
+extern bool UnityEngine__Input_GetKeyUp_Static(int arg0);
+extern bool UnityEngine__Input_GetKeyUp_Static(string arg0);
+extern bool UnityEngine__Input_GetKeyDown_Static(int arg0);
+extern bool UnityEngine__Input_GetKeyDown_Static(string arg0);
+
+
+
+class UnityEngine::Input
+{
+}
+
+namespace UnityEngine::Input
+{
+	float GetAxis(string arg0)
+	{
+		return UnityEngine__Input_GetAxis_Static(arg0);
+	}
+	float GetAxisRaw(string arg0)
+	{
+		return UnityEngine__Input_GetAxisRaw_Static(arg0);
+	}
+	bool GetButton(string arg0)
+	{
+		return UnityEngine__Input_GetButton_Static(arg0);
+	}
+	bool GetButtonDown(string arg0)
+	{
+		return UnityEngine__Input_GetButtonDown_Static(arg0);
+	}
+	bool GetButtonUp(string arg0)
+	{
+		return UnityEngine__Input_GetButtonUp_Static(arg0);
+	}
+	bool GetMouseButton(int arg0)
+	{
+		return UnityEngine__Input_GetMouseButton_Static(arg0);
+	}
+	bool GetMouseButtonDown(int arg0)
+	{
+		return UnityEngine__Input_GetMouseButtonDown_Static(arg0);
+	}
+	bool GetMouseButtonUp(int arg0)
+	{
+		return UnityEngine__Input_GetMouseButtonUp_Static(arg0);
+	}
+	void ResetInputAxes()
+	{
+		UnityEngine__Input_ResetInputAxes_Static();
+	}
+	bool IsJoystickPreconfigured(string arg0)
+	{
+		return UnityEngine__Input_IsJoystickPreconfigured_Static(arg0);
+	}
+	UnityEngine::Touch GetTouch(int arg0)
+	{
+		return UnityEngine__Input_GetTouch_Static(arg0);
+	}
+	UnityEngine::AccelerationEvent GetAccelerationEvent(int arg0)
+	{
+		return UnityEngine__Input_GetAccelerationEvent_Static(arg0);
+	}
+	bool GetKey(int arg0)
+	{
+		return UnityEngine__Input_GetKey_Static(arg0);
+	}
+	bool GetKey(string arg0)
+	{
+		return UnityEngine__Input_GetKey_Static(arg0);
+	}
+	bool GetKeyUp(int arg0)
+	{
+		return UnityEngine__Input_GetKeyUp_Static(arg0);
+	}
+	bool GetKeyUp(string arg0)
+	{
+		return UnityEngine__Input_GetKeyUp_Static(arg0);
+	}
+	bool GetKeyDown(int arg0)
+	{
+		return UnityEngine__Input_GetKeyDown_Static(arg0);
+	}
+	bool GetKeyDown(string arg0)
+	{
+		return UnityEngine__Input_GetKeyDown_Static(arg0);
+	}
+}
+
+
+extern bool UnityEngine__LocationService_get_isEnabledByUser(UnityEngine::LocationService unityengine__locationservice);
+extern int UnityEngine__LocationService_get_status(UnityEngine::LocationService unityengine__locationservice);
+extern UnityEngine::LocationInfo UnityEngine__LocationService_get_lastData(UnityEngine::LocationService unityengine__locationservice);
+extern void UnityEngine__LocationService_Start(UnityEngine::LocationService pthis, float arg0, float arg1);
+extern void UnityEngine__LocationService_Start(UnityEngine::LocationService pthis, float arg0);
+extern void UnityEngine__LocationService_Start(UnityEngine::LocationService pthis);
+extern void UnityEngine__LocationService_Stop(UnityEngine::LocationService pthis);
+
+
+
+class UnityEngine::LocationService
+{
+	bool isEnabledByUser()
+	{
+		return UnityEngine__LocationService_get_isEnabledByUser(this);
+	}
+	int status()
+	{
+		return UnityEngine__LocationService_get_status(this);
+	}
+	UnityEngine::LocationInfo lastData()
+	{
+		return UnityEngine__LocationService_get_lastData(this);
+	}
+	void Start(float arg0, float arg1)
+	{
+		UnityEngine__LocationService_Start(this, arg0, arg1);
+	}
+	void Start(float arg0)
+	{
+		UnityEngine__LocationService_Start(this, arg0);
+	}
+	void Start()
+	{
+		UnityEngine__LocationService_Start(this);
+	}
+	void Stop()
+	{
+		UnityEngine__LocationService_Stop(this);
+	}
+}
+
+namespace UnityEngine::LocationService
+{
+}
+
+
+extern float UnityEngine__Compass_get_magneticHeading(UnityEngine::Compass unityengine__compass);
+extern float UnityEngine__Compass_get_trueHeading(UnityEngine::Compass unityengine__compass);
+extern float UnityEngine__Compass_get_headingAccuracy(UnityEngine::Compass unityengine__compass);
+extern UnityEngine::Vector3 UnityEngine__Compass_get_rawVector(UnityEngine::Compass unityengine__compass);
+extern bool UnityEngine__Compass_get_enabled(UnityEngine::Compass unityengine__compass);
+extern void UnityEngine__Compass_set_enabled(UnityEngine::Compass unityengine__compass, bool newv);
+
+
+
+class UnityEngine::Compass
+{
+	float magneticHeading()
+	{
+		return UnityEngine__Compass_get_magneticHeading(this);
+	}
+	float trueHeading()
+	{
+		return UnityEngine__Compass_get_trueHeading(this);
+	}
+	float headingAccuracy()
+	{
+		return UnityEngine__Compass_get_headingAccuracy(this);
+	}
+	UnityEngine::Vector3 rawVector()
+	{
+		return UnityEngine__Compass_get_rawVector(this);
+	}
+	bool enabled()
+	{
+		return UnityEngine__Compass_get_enabled(this);
+	}
+	void enabled(bool newv)
+	{
+		UnityEngine__Compass_set_enabled(this, newv);
+	}
+}
+
+namespace UnityEngine::Compass
+{
+}
+
+
+extern UnityEngine::Vector3 UnityEngine__Gyroscope_get_rotationRate(UnityEngine::Gyroscope unityengine__gyroscope);
+extern UnityEngine::Vector3 UnityEngine__Gyroscope_get_rotationRateUnbiased(UnityEngine::Gyroscope unityengine__gyroscope);
+extern UnityEngine::Vector3 UnityEngine__Gyroscope_get_gravity(UnityEngine::Gyroscope unityengine__gyroscope);
+extern UnityEngine::Vector3 UnityEngine__Gyroscope_get_userAcceleration(UnityEngine::Gyroscope unityengine__gyroscope);
+extern UnityEngine::Quaternion UnityEngine__Gyroscope_get_attitude(UnityEngine::Gyroscope unityengine__gyroscope);
+extern bool UnityEngine__Gyroscope_get_enabled(UnityEngine::Gyroscope unityengine__gyroscope);
+extern void UnityEngine__Gyroscope_set_enabled(UnityEngine::Gyroscope unityengine__gyroscope, bool newv);
+extern float UnityEngine__Gyroscope_get_updateInterval(UnityEngine::Gyroscope unityengine__gyroscope);
+extern void UnityEngine__Gyroscope_set_updateInterval(UnityEngine::Gyroscope unityengine__gyroscope, float newv);
+
+
+
+class UnityEngine::Gyroscope
+{
+	UnityEngine::Vector3 rotationRate()
+	{
+		return UnityEngine__Gyroscope_get_rotationRate(this);
+	}
+	UnityEngine::Vector3 rotationRateUnbiased()
+	{
+		return UnityEngine__Gyroscope_get_rotationRateUnbiased(this);
+	}
+	UnityEngine::Vector3 gravity()
+	{
+		return UnityEngine__Gyroscope_get_gravity(this);
+	}
+	UnityEngine::Vector3 userAcceleration()
+	{
+		return UnityEngine__Gyroscope_get_userAcceleration(this);
+	}
+	UnityEngine::Quaternion attitude()
+	{
+		return UnityEngine__Gyroscope_get_attitude(this);
+	}
+	bool enabled()
+	{
+		return UnityEngine__Gyroscope_get_enabled(this);
+	}
+	void enabled(bool newv)
+	{
+		UnityEngine__Gyroscope_set_enabled(this, newv);
+	}
+	float updateInterval()
+	{
+		return UnityEngine__Gyroscope_get_updateInterval(this);
+	}
+	void updateInterval(float newv)
+	{
+		UnityEngine__Gyroscope_set_updateInterval(this, newv);
+	}
+}
+
+namespace UnityEngine::Gyroscope
+{
+}
+
+
+extern UnityEngine::Vector3 UnityEngine__Vector3_Slerp_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Vector3_SlerpUnclamped_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Vector3_RotateTowards_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2, float arg3);
+extern UnityEngine::Vector3 UnityEngine__Vector3_Lerp_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Vector3_LerpUnclamped_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Vector3_MoveTowards_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Vector3_Scale_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Vector3 UnityEngine__Vector3_Cross_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Vector3 UnityEngine__Vector3_Reflect_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Vector3 UnityEngine__Vector3_Normalize_Static(UnityEngine::Vector3 arg0);
+extern float UnityEngine__Vector3_Dot_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Vector3 UnityEngine__Vector3_Project_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Vector3 UnityEngine__Vector3_ProjectOnPlane_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern float UnityEngine__Vector3_Angle_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern float UnityEngine__Vector3_SignedAngle_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, UnityEngine::Vector3 arg2);
+extern float UnityEngine__Vector3_Distance_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Vector3 UnityEngine__Vector3_ClampMagnitude_Static(UnityEngine::Vector3 arg0, float arg1);
+extern float UnityEngine__Vector3_Magnitude_Static(UnityEngine::Vector3 arg0);
+extern float UnityEngine__Vector3_SqrMagnitude_Static(UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Vector3_Min_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Vector3 UnityEngine__Vector3_Max_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern void UnityEngine__Vector3_Set(UnityEngine::Vector3 pthis, float arg0, float arg1, float arg2);
+extern void UnityEngine__Vector3_Scale(UnityEngine::Vector3 pthis, UnityEngine::Vector3 arg0);
+extern int UnityEngine__Vector3_GetHashCode(UnityEngine::Vector3 pthis);
+extern bool UnityEngine__Vector3_Equals(UnityEngine::Vector3 pthis, UnityEngine::Vector3 arg0);
+extern void UnityEngine__Vector3_Normalize(UnityEngine::Vector3 pthis);
+extern string UnityEngine__Vector3_ToString(UnityEngine::Vector3 pthis);
+extern string UnityEngine__Vector3_ToString(UnityEngine::Vector3 pthis, string arg0);
+
+
+
+class UnityEngine::Vector3
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+	void Set(float arg0, float arg1, float arg2)
+	{
+		UnityEngine__Vector3_Set(this, arg0, arg1, arg2);
+	}
+	void Scale(UnityEngine::Vector3 arg0)
+	{
+		UnityEngine__Vector3_Scale(this, arg0);
+	}
+	int GetHashCode()
+	{
+		return UnityEngine__Vector3_GetHashCode(this);
+	}
+	bool Equals(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Vector3_Equals(this, arg0);
+	}
+	void Normalize()
+	{
+		UnityEngine__Vector3_Normalize(this);
+	}
+	string ToString()
+	{
+		return UnityEngine__Vector3_ToString(this);
+	}
+	string ToString(string arg0)
+	{
+		return UnityEngine__Vector3_ToString(this, arg0);
+	}
+}
+
+namespace UnityEngine::Vector3
+{
+	UnityEngine::Vector3 Slerp(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2)
+	{
+		return UnityEngine__Vector3_Slerp_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 SlerpUnclamped(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2)
+	{
+		return UnityEngine__Vector3_SlerpUnclamped_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 RotateTowards(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2, float arg3)
+	{
+		return UnityEngine__Vector3_RotateTowards_Static(arg0, arg1, arg2, arg3);
+	}
+	UnityEngine::Vector3 Lerp(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2)
+	{
+		return UnityEngine__Vector3_Lerp_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 LerpUnclamped(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2)
+	{
+		return UnityEngine__Vector3_LerpUnclamped_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 MoveTowards(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2)
+	{
+		return UnityEngine__Vector3_MoveTowards_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 Scale(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_Scale_Static(arg0, arg1);
+	}
+	UnityEngine::Vector3 Cross(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_Cross_Static(arg0, arg1);
+	}
+	UnityEngine::Vector3 Reflect(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_Reflect_Static(arg0, arg1);
+	}
+	UnityEngine::Vector3 Normalize(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Vector3_Normalize_Static(arg0);
+	}
+	float Dot(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_Dot_Static(arg0, arg1);
+	}
+	UnityEngine::Vector3 Project(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_Project_Static(arg0, arg1);
+	}
+	UnityEngine::Vector3 ProjectOnPlane(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_ProjectOnPlane_Static(arg0, arg1);
+	}
+	float Angle(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_Angle_Static(arg0, arg1);
+	}
+	float SignedAngle(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, UnityEngine::Vector3 arg2)
+	{
+		return UnityEngine__Vector3_SignedAngle_Static(arg0, arg1, arg2);
+	}
+	float Distance(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_Distance_Static(arg0, arg1);
+	}
+	UnityEngine::Vector3 ClampMagnitude(UnityEngine::Vector3 arg0, float arg1)
+	{
+		return UnityEngine__Vector3_ClampMagnitude_Static(arg0, arg1);
+	}
+	float Magnitude(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Vector3_Magnitude_Static(arg0);
+	}
+	float SqrMagnitude(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Vector3_SqrMagnitude_Static(arg0);
+	}
+	UnityEngine::Vector3 Min(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_Min_Static(arg0, arg1);
+	}
+	UnityEngine::Vector3 Max(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Vector3_Max_Static(arg0, arg1);
+	}
+}
+
+
+extern UnityEngine::Quaternion UnityEngine__Quaternion_FromToRotation_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_Inverse_Static(UnityEngine::Quaternion arg0);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_Slerp_Static(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_SlerpUnclamped_Static(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_Lerp_Static(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_LerpUnclamped_Static(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_AngleAxis_Static(float arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_LookRotation_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_LookRotation_Static(UnityEngine::Vector3 arg0);
+extern float UnityEngine__Quaternion_Dot_Static(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1);
+extern float UnityEngine__Quaternion_Angle_Static(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_Euler_Static(float arg0, float arg1, float arg2);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_Euler_Static(UnityEngine::Vector3 arg0);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_RotateTowards_Static(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2);
+extern UnityEngine::Quaternion UnityEngine__Quaternion_Normalize_Static(UnityEngine::Quaternion arg0);
+extern void UnityEngine__Quaternion_Set(UnityEngine::Quaternion pthis, float arg0, float arg1, float arg2, float arg3);
+extern void UnityEngine__Quaternion_SetLookRotation(UnityEngine::Quaternion pthis, UnityEngine::Vector3 arg0);
+extern void UnityEngine__Quaternion_SetLookRotation(UnityEngine::Quaternion pthis, UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern void UnityEngine__Quaternion_SetFromToRotation(UnityEngine::Quaternion pthis, UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern void UnityEngine__Quaternion_Normalize(UnityEngine::Quaternion pthis);
+extern int UnityEngine__Quaternion_GetHashCode(UnityEngine::Quaternion pthis);
+extern bool UnityEngine__Quaternion_Equals(UnityEngine::Quaternion pthis, UnityEngine::Quaternion arg0);
+extern string UnityEngine__Quaternion_ToString(UnityEngine::Quaternion pthis);
+extern string UnityEngine__Quaternion_ToString(UnityEngine::Quaternion pthis, string arg0);
+
+
+
+class UnityEngine::Quaternion
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+	float w = 0.0f;
+	void Set(float arg0, float arg1, float arg2, float arg3)
+	{
+		UnityEngine__Quaternion_Set(this, arg0, arg1, arg2, arg3);
+	}
+	void SetLookRotation(UnityEngine::Vector3 arg0)
+	{
+		UnityEngine__Quaternion_SetLookRotation(this, arg0);
+	}
+	void SetLookRotation(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		UnityEngine__Quaternion_SetLookRotation(this, arg0, arg1);
+	}
+	void SetFromToRotation(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		UnityEngine__Quaternion_SetFromToRotation(this, arg0, arg1);
+	}
+	void Normalize()
+	{
+		UnityEngine__Quaternion_Normalize(this);
+	}
+	int GetHashCode()
+	{
+		return UnityEngine__Quaternion_GetHashCode(this);
+	}
+	bool Equals(UnityEngine::Quaternion arg0)
+	{
+		return UnityEngine__Quaternion_Equals(this, arg0);
+	}
+	string ToString()
+	{
+		return UnityEngine__Quaternion_ToString(this);
+	}
+	string ToString(string arg0)
+	{
+		return UnityEngine__Quaternion_ToString(this, arg0);
+	}
+}
+
+namespace UnityEngine::Quaternion
+{
+	UnityEngine::Quaternion FromToRotation(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Quaternion_FromToRotation_Static(arg0, arg1);
+	}
+	UnityEngine::Quaternion Inverse(UnityEngine::Quaternion arg0)
+	{
+		return UnityEngine__Quaternion_Inverse_Static(arg0);
+	}
+	UnityEngine::Quaternion Slerp(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2)
+	{
+		return UnityEngine__Quaternion_Slerp_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Quaternion SlerpUnclamped(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2)
+	{
+		return UnityEngine__Quaternion_SlerpUnclamped_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Quaternion Lerp(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2)
+	{
+		return UnityEngine__Quaternion_Lerp_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Quaternion LerpUnclamped(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2)
+	{
+		return UnityEngine__Quaternion_LerpUnclamped_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Quaternion AngleAxis(float arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Quaternion_AngleAxis_Static(arg0, arg1);
+	}
+	UnityEngine::Quaternion LookRotation(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Quaternion_LookRotation_Static(arg0, arg1);
+	}
+	UnityEngine::Quaternion LookRotation(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Quaternion_LookRotation_Static(arg0);
+	}
+	float Dot(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1)
+	{
+		return UnityEngine__Quaternion_Dot_Static(arg0, arg1);
+	}
+	float Angle(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1)
+	{
+		return UnityEngine__Quaternion_Angle_Static(arg0, arg1);
+	}
+	UnityEngine::Quaternion Euler(float arg0, float arg1, float arg2)
+	{
+		return UnityEngine__Quaternion_Euler_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Quaternion Euler(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Quaternion_Euler_Static(arg0);
+	}
+	UnityEngine::Quaternion RotateTowards(UnityEngine::Quaternion arg0, UnityEngine::Quaternion arg1, float arg2)
+	{
+		return UnityEngine__Quaternion_RotateTowards_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Quaternion Normalize(UnityEngine::Quaternion arg0)
+	{
+		return UnityEngine__Quaternion_Normalize_Static(arg0);
+	}
+}
+
+
+extern float UnityEngine__Matrix4x4_Determinant_Static(UnityEngine::Matrix4x4 arg0);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_TRS_Static(UnityEngine::Vector3 arg0, UnityEngine::Quaternion arg1, UnityEngine::Vector3 arg2);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_Inverse_Static(UnityEngine::Matrix4x4 arg0);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_Transpose_Static(UnityEngine::Matrix4x4 arg0);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_Ortho_Static(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_Perspective_Static(float arg0, float arg1, float arg2, float arg3);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_LookAt_Static(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, UnityEngine::Vector3 arg2);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_Frustum_Static(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_Frustum_Static(UnityEngine::FrustumPlanes arg0);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_Scale_Static(UnityEngine::Vector3 arg0);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_Translate_Static(UnityEngine::Vector3 arg0);
+extern UnityEngine::Matrix4x4 UnityEngine__Matrix4x4_Rotate_Static(UnityEngine::Quaternion arg0);
+extern bool UnityEngine__Matrix4x4_ValidTRS(UnityEngine::Matrix4x4 pthis);
+extern void UnityEngine__Matrix4x4_SetTRS(UnityEngine::Matrix4x4 pthis, UnityEngine::Vector3 arg0, UnityEngine::Quaternion arg1, UnityEngine::Vector3 arg2);
+extern int UnityEngine__Matrix4x4_GetHashCode(UnityEngine::Matrix4x4 pthis);
+extern bool UnityEngine__Matrix4x4_Equals(UnityEngine::Matrix4x4 pthis, UnityEngine::Matrix4x4 arg0);
+extern UnityEngine::Vector4 UnityEngine__Matrix4x4_GetColumn(UnityEngine::Matrix4x4 pthis, int arg0);
+extern UnityEngine::Vector4 UnityEngine__Matrix4x4_GetRow(UnityEngine::Matrix4x4 pthis, int arg0);
+extern UnityEngine::Vector3 UnityEngine__Matrix4x4_GetPosition(UnityEngine::Matrix4x4 pthis);
+extern void UnityEngine__Matrix4x4_SetColumn(UnityEngine::Matrix4x4 pthis, int arg0, UnityEngine::Vector4 arg1);
+extern void UnityEngine__Matrix4x4_SetRow(UnityEngine::Matrix4x4 pthis, int arg0, UnityEngine::Vector4 arg1);
+extern UnityEngine::Vector3 UnityEngine__Matrix4x4_MultiplyPoint(UnityEngine::Matrix4x4 pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Matrix4x4_MultiplyPoint3x4(UnityEngine::Matrix4x4 pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Matrix4x4_MultiplyVector(UnityEngine::Matrix4x4 pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Plane UnityEngine__Matrix4x4_TransformPlane(UnityEngine::Matrix4x4 pthis, UnityEngine::Plane arg0);
+extern string UnityEngine__Matrix4x4_ToString(UnityEngine::Matrix4x4 pthis);
+extern string UnityEngine__Matrix4x4_ToString(UnityEngine::Matrix4x4 pthis, string arg0);
+
+
+
+class UnityEngine::Matrix4x4
+{
+	float m00 = 0.0f;
+	float m10 = 0.0f;
+	float m20 = 0.0f;
+	float m30 = 0.0f;
+	float m01 = 0.0f;
+	float m11 = 0.0f;
+	float m21 = 0.0f;
+	float m31 = 0.0f;
+	float m02 = 0.0f;
+	float m12 = 0.0f;
+	float m22 = 0.0f;
+	float m32 = 0.0f;
+	float m03 = 0.0f;
+	float m13 = 0.0f;
+	float m23 = 0.0f;
+	float m33 = 0.0f;
+	bool ValidTRS()
+	{
+		return UnityEngine__Matrix4x4_ValidTRS(this);
+	}
+	void SetTRS(UnityEngine::Vector3 arg0, UnityEngine::Quaternion arg1, UnityEngine::Vector3 arg2)
+	{
+		UnityEngine__Matrix4x4_SetTRS(this, arg0, arg1, arg2);
+	}
+	int GetHashCode()
+	{
+		return UnityEngine__Matrix4x4_GetHashCode(this);
+	}
+	bool Equals(UnityEngine::Matrix4x4 arg0)
+	{
+		return UnityEngine__Matrix4x4_Equals(this, arg0);
+	}
+	UnityEngine::Vector4 GetColumn(int arg0)
+	{
+		return UnityEngine__Matrix4x4_GetColumn(this, arg0);
+	}
+	UnityEngine::Vector4 GetRow(int arg0)
+	{
+		return UnityEngine__Matrix4x4_GetRow(this, arg0);
+	}
+	UnityEngine::Vector3 GetPosition()
+	{
+		return UnityEngine__Matrix4x4_GetPosition(this);
+	}
+	void SetColumn(int arg0, UnityEngine::Vector4 arg1)
+	{
+		UnityEngine__Matrix4x4_SetColumn(this, arg0, arg1);
+	}
+	void SetRow(int arg0, UnityEngine::Vector4 arg1)
+	{
+		UnityEngine__Matrix4x4_SetRow(this, arg0, arg1);
+	}
+	UnityEngine::Vector3 MultiplyPoint(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Matrix4x4_MultiplyPoint(this, arg0);
+	}
+	UnityEngine::Vector3 MultiplyPoint3x4(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Matrix4x4_MultiplyPoint3x4(this, arg0);
+	}
+	UnityEngine::Vector3 MultiplyVector(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Matrix4x4_MultiplyVector(this, arg0);
+	}
+	UnityEngine::Plane TransformPlane(UnityEngine::Plane arg0)
+	{
+		return UnityEngine__Matrix4x4_TransformPlane(this, arg0);
+	}
+	string ToString()
+	{
+		return UnityEngine__Matrix4x4_ToString(this);
+	}
+	string ToString(string arg0)
+	{
+		return UnityEngine__Matrix4x4_ToString(this, arg0);
+	}
+}
+
+namespace UnityEngine::Matrix4x4
+{
+	float Determinant(UnityEngine::Matrix4x4 arg0)
+	{
+		return UnityEngine__Matrix4x4_Determinant_Static(arg0);
+	}
+	UnityEngine::Matrix4x4 TRS(UnityEngine::Vector3 arg0, UnityEngine::Quaternion arg1, UnityEngine::Vector3 arg2)
+	{
+		return UnityEngine__Matrix4x4_TRS_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Matrix4x4 Inverse(UnityEngine::Matrix4x4 arg0)
+	{
+		return UnityEngine__Matrix4x4_Inverse_Static(arg0);
+	}
+	UnityEngine::Matrix4x4 Transpose(UnityEngine::Matrix4x4 arg0)
+	{
+		return UnityEngine__Matrix4x4_Transpose_Static(arg0);
+	}
+	UnityEngine::Matrix4x4 Ortho(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5)
+	{
+		return UnityEngine__Matrix4x4_Ortho_Static(arg0, arg1, arg2, arg3, arg4, arg5);
+	}
+	UnityEngine::Matrix4x4 Perspective(float arg0, float arg1, float arg2, float arg3)
+	{
+		return UnityEngine__Matrix4x4_Perspective_Static(arg0, arg1, arg2, arg3);
+	}
+	UnityEngine::Matrix4x4 LookAt(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, UnityEngine::Vector3 arg2)
+	{
+		return UnityEngine__Matrix4x4_LookAt_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Matrix4x4 Frustum(float arg0, float arg1, float arg2, float arg3, float arg4, float arg5)
+	{
+		return UnityEngine__Matrix4x4_Frustum_Static(arg0, arg1, arg2, arg3, arg4, arg5);
+	}
+	UnityEngine::Matrix4x4 Frustum(UnityEngine::FrustumPlanes arg0)
+	{
+		return UnityEngine__Matrix4x4_Frustum_Static(arg0);
+	}
+	UnityEngine::Matrix4x4 Scale(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Matrix4x4_Scale_Static(arg0);
+	}
+	UnityEngine::Matrix4x4 Translate(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Matrix4x4_Translate_Static(arg0);
+	}
+	UnityEngine::Matrix4x4 Rotate(UnityEngine::Quaternion arg0)
+	{
+		return UnityEngine__Matrix4x4_Rotate_Static(arg0);
+	}
+}
+
+
+
+
+
+class UnityEngine::FrustumPlanes
+{
+	float left = 0.0f;
+	float right = 0.0f;
+	float bottom = 0.0f;
+	float top = 0.0f;
+	float zNear = 0.0f;
+	float zFar = 0.0f;
+}
+
+namespace UnityEngine::FrustumPlanes
+{
+}
+
+
+extern UnityEngine::Vector4 UnityEngine__Vector4_Lerp_Static(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1, float arg2);
+extern UnityEngine::Vector4 UnityEngine__Vector4_LerpUnclamped_Static(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1, float arg2);
+extern UnityEngine::Vector4 UnityEngine__Vector4_MoveTowards_Static(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1, float arg2);
+extern UnityEngine::Vector4 UnityEngine__Vector4_Scale_Static(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1);
+extern UnityEngine::Vector4 UnityEngine__Vector4_Normalize_Static(UnityEngine::Vector4 arg0);
+extern float UnityEngine__Vector4_Dot_Static(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1);
+extern UnityEngine::Vector4 UnityEngine__Vector4_Project_Static(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1);
+extern float UnityEngine__Vector4_Distance_Static(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1);
+extern float UnityEngine__Vector4_Magnitude_Static(UnityEngine::Vector4 arg0);
+extern UnityEngine::Vector4 UnityEngine__Vector4_Min_Static(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1);
+extern UnityEngine::Vector4 UnityEngine__Vector4_Max_Static(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1);
+extern float UnityEngine__Vector4_SqrMagnitude_Static(UnityEngine::Vector4 arg0);
+extern void UnityEngine__Vector4_Set(UnityEngine::Vector4 pthis, float arg0, float arg1, float arg2, float arg3);
+extern void UnityEngine__Vector4_Scale(UnityEngine::Vector4 pthis, UnityEngine::Vector4 arg0);
+extern int UnityEngine__Vector4_GetHashCode(UnityEngine::Vector4 pthis);
+extern bool UnityEngine__Vector4_Equals(UnityEngine::Vector4 pthis, UnityEngine::Vector4 arg0);
+extern void UnityEngine__Vector4_Normalize(UnityEngine::Vector4 pthis);
+extern string UnityEngine__Vector4_ToString(UnityEngine::Vector4 pthis);
+extern string UnityEngine__Vector4_ToString(UnityEngine::Vector4 pthis, string arg0);
+extern float UnityEngine__Vector4_SqrMagnitude(UnityEngine::Vector4 pthis);
+
+
+
+class UnityEngine::Vector4
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+	float w = 0.0f;
+	void Set(float arg0, float arg1, float arg2, float arg3)
+	{
+		UnityEngine__Vector4_Set(this, arg0, arg1, arg2, arg3);
+	}
+	void Scale(UnityEngine::Vector4 arg0)
+	{
+		UnityEngine__Vector4_Scale(this, arg0);
+	}
+	int GetHashCode()
+	{
+		return UnityEngine__Vector4_GetHashCode(this);
+	}
+	bool Equals(UnityEngine::Vector4 arg0)
+	{
+		return UnityEngine__Vector4_Equals(this, arg0);
+	}
+	void Normalize()
+	{
+		UnityEngine__Vector4_Normalize(this);
+	}
+	string ToString()
+	{
+		return UnityEngine__Vector4_ToString(this);
+	}
+	string ToString(string arg0)
+	{
+		return UnityEngine__Vector4_ToString(this, arg0);
+	}
+	float SqrMagnitude()
+	{
+		return UnityEngine__Vector4_SqrMagnitude(this);
+	}
+}
+
+namespace UnityEngine::Vector4
+{
+	UnityEngine::Vector4 Lerp(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1, float arg2)
+	{
+		return UnityEngine__Vector4_Lerp_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector4 LerpUnclamped(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1, float arg2)
+	{
+		return UnityEngine__Vector4_LerpUnclamped_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector4 MoveTowards(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1, float arg2)
+	{
+		return UnityEngine__Vector4_MoveTowards_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector4 Scale(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1)
+	{
+		return UnityEngine__Vector4_Scale_Static(arg0, arg1);
+	}
+	UnityEngine::Vector4 Normalize(UnityEngine::Vector4 arg0)
+	{
+		return UnityEngine__Vector4_Normalize_Static(arg0);
+	}
+	float Dot(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1)
+	{
+		return UnityEngine__Vector4_Dot_Static(arg0, arg1);
+	}
+	UnityEngine::Vector4 Project(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1)
+	{
+		return UnityEngine__Vector4_Project_Static(arg0, arg1);
+	}
+	float Distance(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1)
+	{
+		return UnityEngine__Vector4_Distance_Static(arg0, arg1);
+	}
+	float Magnitude(UnityEngine::Vector4 arg0)
+	{
+		return UnityEngine__Vector4_Magnitude_Static(arg0);
+	}
+	UnityEngine::Vector4 Min(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1)
+	{
+		return UnityEngine__Vector4_Min_Static(arg0, arg1);
+	}
+	UnityEngine::Vector4 Max(UnityEngine::Vector4 arg0, UnityEngine::Vector4 arg1)
+	{
+		return UnityEngine__Vector4_Max_Static(arg0, arg1);
+	}
+	float SqrMagnitude(UnityEngine::Vector4 arg0)
+	{
+		return UnityEngine__Vector4_SqrMagnitude_Static(arg0);
+	}
+}
+
+
+extern UnityEngine::Vector2 UnityEngine__Vector2_Lerp_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1, float arg2);
+extern UnityEngine::Vector2 UnityEngine__Vector2_LerpUnclamped_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1, float arg2);
+extern UnityEngine::Vector2 UnityEngine__Vector2_MoveTowards_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1, float arg2);
+extern UnityEngine::Vector2 UnityEngine__Vector2_Scale_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1);
+extern UnityEngine::Vector2 UnityEngine__Vector2_Reflect_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1);
+extern UnityEngine::Vector2 UnityEngine__Vector2_Perpendicular_Static(UnityEngine::Vector2 arg0);
+extern float UnityEngine__Vector2_Dot_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1);
+extern float UnityEngine__Vector2_Angle_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1);
+extern float UnityEngine__Vector2_SignedAngle_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1);
+extern float UnityEngine__Vector2_Distance_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1);
+extern UnityEngine::Vector2 UnityEngine__Vector2_ClampMagnitude_Static(UnityEngine::Vector2 arg0, float arg1);
+extern float UnityEngine__Vector2_SqrMagnitude_Static(UnityEngine::Vector2 arg0);
+extern UnityEngine::Vector2 UnityEngine__Vector2_Min_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1);
+extern UnityEngine::Vector2 UnityEngine__Vector2_Max_Static(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1);
+extern void UnityEngine__Vector2_Set(UnityEngine::Vector2 pthis, float arg0, float arg1);
+extern void UnityEngine__Vector2_Scale(UnityEngine::Vector2 pthis, UnityEngine::Vector2 arg0);
+extern void UnityEngine__Vector2_Normalize(UnityEngine::Vector2 pthis);
+extern string UnityEngine__Vector2_ToString(UnityEngine::Vector2 pthis);
+extern string UnityEngine__Vector2_ToString(UnityEngine::Vector2 pthis, string arg0);
+extern int UnityEngine__Vector2_GetHashCode(UnityEngine::Vector2 pthis);
+extern bool UnityEngine__Vector2_Equals(UnityEngine::Vector2 pthis, UnityEngine::Vector2 arg0);
+extern float UnityEngine__Vector2_SqrMagnitude(UnityEngine::Vector2 pthis);
+
+
+
+class UnityEngine::Vector2
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	void Set(float arg0, float arg1)
+	{
+		UnityEngine__Vector2_Set(this, arg0, arg1);
+	}
+	void Scale(UnityEngine::Vector2 arg0)
+	{
+		UnityEngine__Vector2_Scale(this, arg0);
+	}
+	void Normalize()
+	{
+		UnityEngine__Vector2_Normalize(this);
+	}
+	string ToString()
+	{
+		return UnityEngine__Vector2_ToString(this);
+	}
+	string ToString(string arg0)
+	{
+		return UnityEngine__Vector2_ToString(this, arg0);
+	}
+	int GetHashCode()
+	{
+		return UnityEngine__Vector2_GetHashCode(this);
+	}
+	bool Equals(UnityEngine::Vector2 arg0)
+	{
+		return UnityEngine__Vector2_Equals(this, arg0);
+	}
+	float SqrMagnitude()
+	{
+		return UnityEngine__Vector2_SqrMagnitude(this);
+	}
+}
+
+namespace UnityEngine::Vector2
+{
+	UnityEngine::Vector2 Lerp(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1, float arg2)
+	{
+		return UnityEngine__Vector2_Lerp_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector2 LerpUnclamped(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1, float arg2)
+	{
+		return UnityEngine__Vector2_LerpUnclamped_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector2 MoveTowards(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1, float arg2)
+	{
+		return UnityEngine__Vector2_MoveTowards_Static(arg0, arg1, arg2);
+	}
+	UnityEngine::Vector2 Scale(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1)
+	{
+		return UnityEngine__Vector2_Scale_Static(arg0, arg1);
+	}
+	UnityEngine::Vector2 Reflect(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1)
+	{
+		return UnityEngine__Vector2_Reflect_Static(arg0, arg1);
+	}
+	UnityEngine::Vector2 Perpendicular(UnityEngine::Vector2 arg0)
+	{
+		return UnityEngine__Vector2_Perpendicular_Static(arg0);
+	}
+	float Dot(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1)
+	{
+		return UnityEngine__Vector2_Dot_Static(arg0, arg1);
+	}
+	float Angle(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1)
+	{
+		return UnityEngine__Vector2_Angle_Static(arg0, arg1);
+	}
+	float SignedAngle(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1)
+	{
+		return UnityEngine__Vector2_SignedAngle_Static(arg0, arg1);
+	}
+	float Distance(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1)
+	{
+		return UnityEngine__Vector2_Distance_Static(arg0, arg1);
+	}
+	UnityEngine::Vector2 ClampMagnitude(UnityEngine::Vector2 arg0, float arg1)
+	{
+		return UnityEngine__Vector2_ClampMagnitude_Static(arg0, arg1);
+	}
+	float SqrMagnitude(UnityEngine::Vector2 arg0)
+	{
+		return UnityEngine__Vector2_SqrMagnitude_Static(arg0);
+	}
+	UnityEngine::Vector2 Min(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1)
+	{
+		return UnityEngine__Vector2_Min_Static(arg0, arg1);
+	}
+	UnityEngine::Vector2 Max(UnityEngine::Vector2 arg0, UnityEngine::Vector2 arg1)
+	{
+		return UnityEngine__Vector2_Max_Static(arg0, arg1);
+	}
+}
+
+
+extern UnityEngine::Plane UnityEngine__Plane_Translate_Static(UnityEngine::Plane arg0, UnityEngine::Vector3 arg1);
+extern void UnityEngine__Plane_SetNormalAndPosition(UnityEngine::Plane pthis, UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern void UnityEngine__Plane_Set3Points(UnityEngine::Plane pthis, UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, UnityEngine::Vector3 arg2);
+extern void UnityEngine__Plane_Flip(UnityEngine::Plane pthis);
+extern void UnityEngine__Plane_Translate(UnityEngine::Plane pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Plane_ClosestPointOnPlane(UnityEngine::Plane pthis, UnityEngine::Vector3 arg0);
+extern float UnityEngine__Plane_GetDistanceToPoint(UnityEngine::Plane pthis, UnityEngine::Vector3 arg0);
+extern bool UnityEngine__Plane_GetSide(UnityEngine::Plane pthis, UnityEngine::Vector3 arg0);
+extern bool UnityEngine__Plane_SameSide(UnityEngine::Plane pthis, UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern string UnityEngine__Plane_ToString(UnityEngine::Plane pthis);
+extern string UnityEngine__Plane_ToString(UnityEngine::Plane pthis, string arg0);
+
+
+
+class UnityEngine::Plane
+{
+	void SetNormalAndPosition(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		UnityEngine__Plane_SetNormalAndPosition(this, arg0, arg1);
+	}
+	void Set3Points(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, UnityEngine::Vector3 arg2)
+	{
+		UnityEngine__Plane_Set3Points(this, arg0, arg1, arg2);
+	}
+	void Flip()
+	{
+		UnityEngine__Plane_Flip(this);
+	}
+	void Translate(UnityEngine::Vector3 arg0)
+	{
+		UnityEngine__Plane_Translate(this, arg0);
+	}
+	UnityEngine::Vector3 ClosestPointOnPlane(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Plane_ClosestPointOnPlane(this, arg0);
+	}
+	float GetDistanceToPoint(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Plane_GetDistanceToPoint(this, arg0);
+	}
+	bool GetSide(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Plane_GetSide(this, arg0);
+	}
+	bool SameSide(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Plane_SameSide(this, arg0, arg1);
+	}
+	string ToString()
+	{
+		return UnityEngine__Plane_ToString(this);
+	}
+	string ToString(string arg0)
+	{
+		return UnityEngine__Plane_ToString(this, arg0);
+	}
+}
+
+namespace UnityEngine::Plane
+{
+	UnityEngine::Plane Translate(UnityEngine::Plane arg0, UnityEngine::Vector3 arg1)
+	{
+		return UnityEngine__Plane_Translate_Static(arg0, arg1);
+	}
+}
+
+
+extern UnityEngine::Vector3 UnityEngine__Ray_GetPoint(UnityEngine::Ray pthis, float arg0);
+extern string UnityEngine__Ray_ToString(UnityEngine::Ray pthis);
+extern string UnityEngine__Ray_ToString(UnityEngine::Ray pthis, string arg0);
+
+
+
+class UnityEngine::Ray
+{
+	UnityEngine::Vector3 GetPoint(float arg0)
+	{
+		return UnityEngine__Ray_GetPoint(this, arg0);
+	}
+	string ToString()
+	{
+		return UnityEngine__Ray_ToString(this);
+	}
+	string ToString(string arg0)
+	{
+		return UnityEngine__Ray_ToString(this, arg0);
+	}
+}
+
+namespace UnityEngine::Ray
+{
+}
+
+
+
+
+
+class UnityEngine::LocationInfo
+{
+}
+
+namespace UnityEngine::LocationInfo
+{
+}
+
+
+
+
+
+class UnityEngine::Touch
+{
+}
+
+namespace UnityEngine::Touch
+{
+}
+
+
+
+
+
+class UnityEngine::AccelerationEvent
+{
+}
+
+namespace UnityEngine::AccelerationEvent
+{
+}
+
+
+extern UnityEngine::GameObject UnityEngine__GameObject_CreatePrimitive_Static(int arg0);
+extern UnityEngine::GameObject UnityEngine__GameObject_FindWithTag_Static(string arg0);
+extern UnityEngine::GameObject UnityEngine__GameObject_FindGameObjectWithTag_Static(string arg0);
+extern UnityEngine::GameObject UnityEngine__GameObject_Find_Static(string arg0);
+extern UnityEngine::Transform UnityEngine__GameObject_get_transform(UnityEngine::GameObject unityengine__gameobject);
+extern int UnityEngine__GameObject_get_layer(UnityEngine::GameObject unityengine__gameobject);
+extern void UnityEngine__GameObject_set_layer(UnityEngine::GameObject unityengine__gameobject, int newv);
+extern bool UnityEngine__GameObject_get_activeSelf(UnityEngine::GameObject unityengine__gameobject);
+extern bool UnityEngine__GameObject_get_activeInHierarchy(UnityEngine::GameObject unityengine__gameobject);
+extern bool UnityEngine__GameObject_get_isStatic(UnityEngine::GameObject unityengine__gameobject);
+extern void UnityEngine__GameObject_set_isStatic(UnityEngine::GameObject unityengine__gameobject, bool newv);
+extern string UnityEngine__GameObject_get_tag(UnityEngine::GameObject unityengine__gameobject);
+extern void UnityEngine__GameObject_set_tag(UnityEngine::GameObject unityengine__gameobject, string newv);
+extern UnityEngine::GameObject UnityEngine__GameObject_get_gameObject(UnityEngine::GameObject unityengine__gameobject);
+extern UnityEngine::Component UnityEngine__GameObject_GetComponent(UnityEngine::GameObject pthis, string arg0);
+extern void UnityEngine__GameObject_SendMessageUpwards(UnityEngine::GameObject pthis, string arg0, int arg1);
+extern void UnityEngine__GameObject_SendMessage(UnityEngine::GameObject pthis, string arg0, int arg1);
+extern void UnityEngine__GameObject_BroadcastMessage(UnityEngine::GameObject pthis, string arg0, int arg1);
+extern void UnityEngine__GameObject_SetActive(UnityEngine::GameObject pthis, bool arg0);
+extern bool UnityEngine__GameObject_CompareTag(UnityEngine::GameObject pthis, string arg0);
+extern void UnityEngine__GameObject_SendMessageUpwards(UnityEngine::GameObject pthis, string arg0);
+extern void UnityEngine__GameObject_SendMessage(UnityEngine::GameObject pthis, string arg0);
+extern void UnityEngine__GameObject_BroadcastMessage(UnityEngine::GameObject pthis, string arg0);
+
+
+
+class UnityEngine::GameObject  :  UnityEngine::Object
+{
+	UnityEngine::Transform transform()
+	{
+		return UnityEngine__GameObject_get_transform(this);
+	}
+	int layer()
+	{
+		return UnityEngine__GameObject_get_layer(this);
+	}
+	void layer(int newv)
+	{
+		UnityEngine__GameObject_set_layer(this, newv);
+	}
+	bool activeSelf()
+	{
+		return UnityEngine__GameObject_get_activeSelf(this);
+	}
+	bool activeInHierarchy()
+	{
+		return UnityEngine__GameObject_get_activeInHierarchy(this);
+	}
+	bool isStatic()
+	{
+		return UnityEngine__GameObject_get_isStatic(this);
+	}
+	void isStatic(bool newv)
+	{
+		UnityEngine__GameObject_set_isStatic(this, newv);
+	}
+	string tag()
+	{
+		return UnityEngine__GameObject_get_tag(this);
+	}
+	void tag(string newv)
+	{
+		UnityEngine__GameObject_set_tag(this, newv);
+	}
+	UnityEngine::GameObject gameObject()
+	{
+		return UnityEngine__GameObject_get_gameObject(this);
+	}
+	UnityEngine::Component GetComponent(string arg0)
+	{
+		return UnityEngine__GameObject_GetComponent(this, arg0);
+	}
+	void SendMessageUpwards(string arg0, int arg1)
+	{
+		UnityEngine__GameObject_SendMessageUpwards(this, arg0, arg1);
+	}
+	void SendMessage(string arg0, int arg1)
+	{
+		UnityEngine__GameObject_SendMessage(this, arg0, arg1);
+	}
+	void BroadcastMessage(string arg0, int arg1)
+	{
+		UnityEngine__GameObject_BroadcastMessage(this, arg0, arg1);
+	}
+	void SetActive(bool arg0)
+	{
+		UnityEngine__GameObject_SetActive(this, arg0);
+	}
+	bool CompareTag(string arg0)
+	{
+		return UnityEngine__GameObject_CompareTag(this, arg0);
+	}
+	void SendMessageUpwards(string arg0)
+	{
+		UnityEngine__GameObject_SendMessageUpwards(this, arg0);
+	}
+	void SendMessage(string arg0)
+	{
+		UnityEngine__GameObject_SendMessage(this, arg0);
+	}
+	void BroadcastMessage(string arg0)
+	{
+		UnityEngine__GameObject_BroadcastMessage(this, arg0);
+	}
+}
+
+namespace UnityEngine::GameObject
+{
+	UnityEngine::GameObject CreatePrimitive(int arg0)
+	{
+		return UnityEngine__GameObject_CreatePrimitive_Static(arg0);
+	}
+	UnityEngine::GameObject FindWithTag(string arg0)
+	{
+		return UnityEngine__GameObject_FindWithTag_Static(arg0);
+	}
+	UnityEngine::GameObject FindGameObjectWithTag(string arg0)
+	{
+		return UnityEngine__GameObject_FindGameObjectWithTag_Static(arg0);
+	}
+	UnityEngine::GameObject Find(string arg0)
+	{
+		return UnityEngine__GameObject_Find_Static(arg0);
+	}
+}
+
+
+extern UnityEngine::Transform UnityEngine__Component_get_transform(UnityEngine::Component unityengine__component);
+extern UnityEngine::GameObject UnityEngine__Component_get_gameObject(UnityEngine::Component unityengine__component);
+extern string UnityEngine__Component_get_tag(UnityEngine::Component unityengine__component);
+extern void UnityEngine__Component_set_tag(UnityEngine::Component unityengine__component, string newv);
+extern UnityEngine::Component UnityEngine__Component_GetComponent(UnityEngine::Component pthis, string arg0);
+extern bool UnityEngine__Component_CompareTag(UnityEngine::Component pthis, string arg0);
+extern void UnityEngine__Component_SendMessageUpwards(UnityEngine::Component pthis, string arg0);
+extern void UnityEngine__Component_SendMessageUpwards(UnityEngine::Component pthis, string arg0, int arg1);
+extern void UnityEngine__Component_SendMessage(UnityEngine::Component pthis, string arg0);
+extern void UnityEngine__Component_SendMessage(UnityEngine::Component pthis, string arg0, int arg1);
+extern void UnityEngine__Component_BroadcastMessage(UnityEngine::Component pthis, string arg0);
+extern void UnityEngine__Component_BroadcastMessage(UnityEngine::Component pthis, string arg0, int arg1);
+
+
+
+class UnityEngine::Component  :  UnityEngine::Object
+{
+	UnityEngine::Transform transform()
+	{
+		return UnityEngine__Component_get_transform(this);
+	}
+	UnityEngine::GameObject gameObject()
+	{
+		return UnityEngine__Component_get_gameObject(this);
+	}
+	string tag()
+	{
+		return UnityEngine__Component_get_tag(this);
+	}
+	void tag(string newv)
+	{
+		UnityEngine__Component_set_tag(this, newv);
+	}
+	UnityEngine::Component GetComponent(string arg0)
+	{
+		return UnityEngine__Component_GetComponent(this, arg0);
+	}
+	bool CompareTag(string arg0)
+	{
+		return UnityEngine__Component_CompareTag(this, arg0);
+	}
+	void SendMessageUpwards(string arg0)
+	{
+		UnityEngine__Component_SendMessageUpwards(this, arg0);
+	}
+	void SendMessageUpwards(string arg0, int arg1)
+	{
+		UnityEngine__Component_SendMessageUpwards(this, arg0, arg1);
+	}
+	void SendMessage(string arg0)
+	{
+		UnityEngine__Component_SendMessage(this, arg0);
+	}
+	void SendMessage(string arg0, int arg1)
+	{
+		UnityEngine__Component_SendMessage(this, arg0, arg1);
+	}
+	void BroadcastMessage(string arg0)
+	{
+		UnityEngine__Component_BroadcastMessage(this, arg0);
+	}
+	void BroadcastMessage(string arg0, int arg1)
+	{
+		UnityEngine__Component_BroadcastMessage(this, arg0, arg1);
+	}
+}
+
+namespace UnityEngine::Component
+{
+}
+
+
+namespace UnityEngine::HideFlags
+{
+	const int None = 0;
+	const int HideInHierarchy = 1;
+	const int HideInInspector = 2;
+	const int DontSaveInEditor = 4;
+	const int NotEditable = 8;
+	const int DontSaveInBuild = 16;
+	const int DontUnloadUnusedAsset = 32;
+	const int DontSave = 52;
+	const int HideAndDontSave = 61;
+}
+extern UnityEngine::Vector3 UnityEngine__Transform_get_position(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_position(UnityEngine::Transform unityengine__transform, UnityEngine::Vector3 newv);
+extern UnityEngine::Vector3 UnityEngine__Transform_get_localPosition(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_localPosition(UnityEngine::Transform unityengine__transform, UnityEngine::Vector3 newv);
+extern UnityEngine::Vector3 UnityEngine__Transform_get_eulerAngles(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_eulerAngles(UnityEngine::Transform unityengine__transform, UnityEngine::Vector3 newv);
+extern UnityEngine::Vector3 UnityEngine__Transform_get_localEulerAngles(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_localEulerAngles(UnityEngine::Transform unityengine__transform, UnityEngine::Vector3 newv);
+extern UnityEngine::Vector3 UnityEngine__Transform_get_right(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_right(UnityEngine::Transform unityengine__transform, UnityEngine::Vector3 newv);
+extern UnityEngine::Vector3 UnityEngine__Transform_get_up(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_up(UnityEngine::Transform unityengine__transform, UnityEngine::Vector3 newv);
+extern UnityEngine::Vector3 UnityEngine__Transform_get_forward(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_forward(UnityEngine::Transform unityengine__transform, UnityEngine::Vector3 newv);
+extern UnityEngine::Quaternion UnityEngine__Transform_get_rotation(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_rotation(UnityEngine::Transform unityengine__transform, UnityEngine::Quaternion newv);
+extern UnityEngine::Quaternion UnityEngine__Transform_get_localRotation(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_localRotation(UnityEngine::Transform unityengine__transform, UnityEngine::Quaternion newv);
+extern UnityEngine::Vector3 UnityEngine__Transform_get_localScale(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_localScale(UnityEngine::Transform unityengine__transform, UnityEngine::Vector3 newv);
+extern UnityEngine::Transform UnityEngine__Transform_get_parent(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_parent(UnityEngine::Transform unityengine__transform, UnityEngine::Transform newv);
+extern UnityEngine::Matrix4x4 UnityEngine__Transform_get_worldToLocalMatrix(UnityEngine::Transform unityengine__transform);
+extern UnityEngine::Matrix4x4 UnityEngine__Transform_get_localToWorldMatrix(UnityEngine::Transform unityengine__transform);
+extern UnityEngine::Transform UnityEngine__Transform_get_root(UnityEngine::Transform unityengine__transform);
+extern int UnityEngine__Transform_get_childCount(UnityEngine::Transform unityengine__transform);
+extern UnityEngine::Vector3 UnityEngine__Transform_get_lossyScale(UnityEngine::Transform unityengine__transform);
+extern bool UnityEngine__Transform_get_hasChanged(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_hasChanged(UnityEngine::Transform unityengine__transform, bool newv);
+extern int UnityEngine__Transform_get_hierarchyCapacity(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_set_hierarchyCapacity(UnityEngine::Transform unityengine__transform, int newv);
+extern int UnityEngine__Transform_get_hierarchyCount(UnityEngine::Transform unityengine__transform);
+extern void UnityEngine__Transform_SetParent(UnityEngine::Transform pthis, UnityEngine::Transform arg0);
+extern void UnityEngine__Transform_SetParent(UnityEngine::Transform pthis, UnityEngine::Transform arg0, bool arg1);
+extern void UnityEngine__Transform_SetPositionAndRotation(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0, UnityEngine::Quaternion arg1);
+extern void UnityEngine__Transform_Translate(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0, int arg1);
+extern void UnityEngine__Transform_Translate(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0);
+extern void UnityEngine__Transform_Translate(UnityEngine::Transform pthis, float arg0, float arg1, float arg2, int arg3);
+extern void UnityEngine__Transform_Translate(UnityEngine::Transform pthis, float arg0, float arg1, float arg2);
+extern void UnityEngine__Transform_Translate(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0, UnityEngine::Transform arg1);
+extern void UnityEngine__Transform_Translate(UnityEngine::Transform pthis, float arg0, float arg1, float arg2, UnityEngine::Transform arg3);
+extern void UnityEngine__Transform_Rotate(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0, int arg1);
+extern void UnityEngine__Transform_Rotate(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0);
+extern void UnityEngine__Transform_Rotate(UnityEngine::Transform pthis, float arg0, float arg1, float arg2, int arg3);
+extern void UnityEngine__Transform_Rotate(UnityEngine::Transform pthis, float arg0, float arg1, float arg2);
+extern void UnityEngine__Transform_Rotate(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0, float arg1, int arg2);
+extern void UnityEngine__Transform_Rotate(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0, float arg1);
+extern void UnityEngine__Transform_RotateAround(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2);
+extern void UnityEngine__Transform_LookAt(UnityEngine::Transform pthis, UnityEngine::Transform arg0, UnityEngine::Vector3 arg1);
+extern void UnityEngine__Transform_LookAt(UnityEngine::Transform pthis, UnityEngine::Transform arg0);
+extern void UnityEngine__Transform_LookAt(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1);
+extern void UnityEngine__Transform_LookAt(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Transform_TransformDirection(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Transform_TransformDirection(UnityEngine::Transform pthis, float arg0, float arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Transform_InverseTransformDirection(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Transform_InverseTransformDirection(UnityEngine::Transform pthis, float arg0, float arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Transform_TransformVector(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Transform_TransformVector(UnityEngine::Transform pthis, float arg0, float arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Transform_InverseTransformVector(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Transform_InverseTransformVector(UnityEngine::Transform pthis, float arg0, float arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Transform_TransformPoint(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Transform_TransformPoint(UnityEngine::Transform pthis, float arg0, float arg1, float arg2);
+extern UnityEngine::Vector3 UnityEngine__Transform_InverseTransformPoint(UnityEngine::Transform pthis, UnityEngine::Vector3 arg0);
+extern UnityEngine::Vector3 UnityEngine__Transform_InverseTransformPoint(UnityEngine::Transform pthis, float arg0, float arg1, float arg2);
+extern void UnityEngine__Transform_DetachChildren(UnityEngine::Transform pthis);
+extern void UnityEngine__Transform_SetAsFirstSibling(UnityEngine::Transform pthis);
+extern void UnityEngine__Transform_SetAsLastSibling(UnityEngine::Transform pthis);
+extern void UnityEngine__Transform_SetSiblingIndex(UnityEngine::Transform pthis, int arg0);
+extern int UnityEngine__Transform_GetSiblingIndex(UnityEngine::Transform pthis);
+extern UnityEngine::Transform UnityEngine__Transform_Find(UnityEngine::Transform pthis, string arg0);
+extern bool UnityEngine__Transform_IsChildOf(UnityEngine::Transform pthis, UnityEngine::Transform arg0);
+extern UnityEngine::Transform UnityEngine__Transform_GetChild(UnityEngine::Transform pthis, int arg0);
+
+
+
+class UnityEngine::Transform  :  UnityEngine::Component
+{
+	UnityEngine::Vector3 position()
+	{
+		return UnityEngine__Transform_get_position(this);
+	}
+	void position(UnityEngine::Vector3 newv)
+	{
+		UnityEngine__Transform_set_position(this, newv);
+	}
+	UnityEngine::Vector3 localPosition()
+	{
+		return UnityEngine__Transform_get_localPosition(this);
+	}
+	void localPosition(UnityEngine::Vector3 newv)
+	{
+		UnityEngine__Transform_set_localPosition(this, newv);
+	}
+	UnityEngine::Vector3 eulerAngles()
+	{
+		return UnityEngine__Transform_get_eulerAngles(this);
+	}
+	void eulerAngles(UnityEngine::Vector3 newv)
+	{
+		UnityEngine__Transform_set_eulerAngles(this, newv);
+	}
+	UnityEngine::Vector3 localEulerAngles()
+	{
+		return UnityEngine__Transform_get_localEulerAngles(this);
+	}
+	void localEulerAngles(UnityEngine::Vector3 newv)
+	{
+		UnityEngine__Transform_set_localEulerAngles(this, newv);
+	}
+	UnityEngine::Vector3 right()
+	{
+		return UnityEngine__Transform_get_right(this);
+	}
+	void right(UnityEngine::Vector3 newv)
+	{
+		UnityEngine__Transform_set_right(this, newv);
+	}
+	UnityEngine::Vector3 up()
+	{
+		return UnityEngine__Transform_get_up(this);
+	}
+	void up(UnityEngine::Vector3 newv)
+	{
+		UnityEngine__Transform_set_up(this, newv);
+	}
+	UnityEngine::Vector3 forward()
+	{
+		return UnityEngine__Transform_get_forward(this);
+	}
+	void forward(UnityEngine::Vector3 newv)
+	{
+		UnityEngine__Transform_set_forward(this, newv);
+	}
+	UnityEngine::Quaternion rotation()
+	{
+		return UnityEngine__Transform_get_rotation(this);
+	}
+	void rotation(UnityEngine::Quaternion newv)
+	{
+		UnityEngine__Transform_set_rotation(this, newv);
+	}
+	UnityEngine::Quaternion localRotation()
+	{
+		return UnityEngine__Transform_get_localRotation(this);
+	}
+	void localRotation(UnityEngine::Quaternion newv)
+	{
+		UnityEngine__Transform_set_localRotation(this, newv);
+	}
+	UnityEngine::Vector3 localScale()
+	{
+		return UnityEngine__Transform_get_localScale(this);
+	}
+	void localScale(UnityEngine::Vector3 newv)
+	{
+		UnityEngine__Transform_set_localScale(this, newv);
+	}
+	UnityEngine::Transform parent()
+	{
+		return UnityEngine__Transform_get_parent(this);
+	}
+	void parent(UnityEngine::Transform newv)
+	{
+		UnityEngine__Transform_set_parent(this, newv);
+	}
+	UnityEngine::Matrix4x4 worldToLocalMatrix()
+	{
+		return UnityEngine__Transform_get_worldToLocalMatrix(this);
+	}
+	UnityEngine::Matrix4x4 localToWorldMatrix()
+	{
+		return UnityEngine__Transform_get_localToWorldMatrix(this);
+	}
+	UnityEngine::Transform root()
+	{
+		return UnityEngine__Transform_get_root(this);
+	}
+	int childCount()
+	{
+		return UnityEngine__Transform_get_childCount(this);
+	}
+	UnityEngine::Vector3 lossyScale()
+	{
+		return UnityEngine__Transform_get_lossyScale(this);
+	}
+	bool hasChanged()
+	{
+		return UnityEngine__Transform_get_hasChanged(this);
+	}
+	void hasChanged(bool newv)
+	{
+		UnityEngine__Transform_set_hasChanged(this, newv);
+	}
+	int hierarchyCapacity()
+	{
+		return UnityEngine__Transform_get_hierarchyCapacity(this);
+	}
+	void hierarchyCapacity(int newv)
+	{
+		UnityEngine__Transform_set_hierarchyCapacity(this, newv);
+	}
+	int hierarchyCount()
+	{
+		return UnityEngine__Transform_get_hierarchyCount(this);
+	}
+	void SetParent(UnityEngine::Transform arg0)
+	{
+		UnityEngine__Transform_SetParent(this, arg0);
+	}
+	void SetParent(UnityEngine::Transform arg0, bool arg1)
+	{
+		UnityEngine__Transform_SetParent(this, arg0, arg1);
+	}
+	void SetPositionAndRotation(UnityEngine::Vector3 arg0, UnityEngine::Quaternion arg1)
+	{
+		UnityEngine__Transform_SetPositionAndRotation(this, arg0, arg1);
+	}
+	void Translate(UnityEngine::Vector3 arg0, int arg1)
+	{
+		UnityEngine__Transform_Translate(this, arg0, arg1);
+	}
+	void Translate(UnityEngine::Vector3 arg0)
+	{
+		UnityEngine__Transform_Translate(this, arg0);
+	}
+	void Translate(float arg0, float arg1, float arg2, int arg3)
+	{
+		UnityEngine__Transform_Translate(this, arg0, arg1, arg2, arg3);
+	}
+	void Translate(float arg0, float arg1, float arg2)
+	{
+		UnityEngine__Transform_Translate(this, arg0, arg1, arg2);
+	}
+	void Translate(UnityEngine::Vector3 arg0, UnityEngine::Transform arg1)
+	{
+		UnityEngine__Transform_Translate(this, arg0, arg1);
+	}
+	void Translate(float arg0, float arg1, float arg2, UnityEngine::Transform arg3)
+	{
+		UnityEngine__Transform_Translate(this, arg0, arg1, arg2, arg3);
+	}
+	void Rotate(UnityEngine::Vector3 arg0, int arg1)
+	{
+		UnityEngine__Transform_Rotate(this, arg0, arg1);
+	}
+	void Rotate(UnityEngine::Vector3 arg0)
+	{
+		UnityEngine__Transform_Rotate(this, arg0);
+	}
+	void Rotate(float arg0, float arg1, float arg2, int arg3)
+	{
+		UnityEngine__Transform_Rotate(this, arg0, arg1, arg2, arg3);
+	}
+	void Rotate(float arg0, float arg1, float arg2)
+	{
+		UnityEngine__Transform_Rotate(this, arg0, arg1, arg2);
+	}
+	void Rotate(UnityEngine::Vector3 arg0, float arg1, int arg2)
+	{
+		UnityEngine__Transform_Rotate(this, arg0, arg1, arg2);
+	}
+	void Rotate(UnityEngine::Vector3 arg0, float arg1)
+	{
+		UnityEngine__Transform_Rotate(this, arg0, arg1);
+	}
+	void RotateAround(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1, float arg2)
+	{
+		UnityEngine__Transform_RotateAround(this, arg0, arg1, arg2);
+	}
+	void LookAt(UnityEngine::Transform arg0, UnityEngine::Vector3 arg1)
+	{
+		UnityEngine__Transform_LookAt(this, arg0, arg1);
+	}
+	void LookAt(UnityEngine::Transform arg0)
+	{
+		UnityEngine__Transform_LookAt(this, arg0);
+	}
+	void LookAt(UnityEngine::Vector3 arg0, UnityEngine::Vector3 arg1)
+	{
+		UnityEngine__Transform_LookAt(this, arg0, arg1);
+	}
+	void LookAt(UnityEngine::Vector3 arg0)
+	{
+		UnityEngine__Transform_LookAt(this, arg0);
+	}
+	UnityEngine::Vector3 TransformDirection(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Transform_TransformDirection(this, arg0);
+	}
+	UnityEngine::Vector3 TransformDirection(float arg0, float arg1, float arg2)
+	{
+		return UnityEngine__Transform_TransformDirection(this, arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 InverseTransformDirection(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Transform_InverseTransformDirection(this, arg0);
+	}
+	UnityEngine::Vector3 InverseTransformDirection(float arg0, float arg1, float arg2)
+	{
+		return UnityEngine__Transform_InverseTransformDirection(this, arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 TransformVector(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Transform_TransformVector(this, arg0);
+	}
+	UnityEngine::Vector3 TransformVector(float arg0, float arg1, float arg2)
+	{
+		return UnityEngine__Transform_TransformVector(this, arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 InverseTransformVector(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Transform_InverseTransformVector(this, arg0);
+	}
+	UnityEngine::Vector3 InverseTransformVector(float arg0, float arg1, float arg2)
+	{
+		return UnityEngine__Transform_InverseTransformVector(this, arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 TransformPoint(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Transform_TransformPoint(this, arg0);
+	}
+	UnityEngine::Vector3 TransformPoint(float arg0, float arg1, float arg2)
+	{
+		return UnityEngine__Transform_TransformPoint(this, arg0, arg1, arg2);
+	}
+	UnityEngine::Vector3 InverseTransformPoint(UnityEngine::Vector3 arg0)
+	{
+		return UnityEngine__Transform_InverseTransformPoint(this, arg0);
+	}
+	UnityEngine::Vector3 InverseTransformPoint(float arg0, float arg1, float arg2)
+	{
+		return UnityEngine__Transform_InverseTransformPoint(this, arg0, arg1, arg2);
+	}
+	void DetachChildren()
+	{
+		UnityEngine__Transform_DetachChildren(this);
+	}
+	void SetAsFirstSibling()
+	{
+		UnityEngine__Transform_SetAsFirstSibling(this);
+	}
+	void SetAsLastSibling()
+	{
+		UnityEngine__Transform_SetAsLastSibling(this);
+	}
+	void SetSiblingIndex(int arg0)
+	{
+		UnityEngine__Transform_SetSiblingIndex(this, arg0);
+	}
+	int GetSiblingIndex()
+	{
+		return UnityEngine__Transform_GetSiblingIndex(this);
+	}
+	UnityEngine::Transform Find(string arg0)
+	{
+		return UnityEngine__Transform_Find(this, arg0);
+	}
+	bool IsChildOf(UnityEngine::Transform arg0)
+	{
+		return UnityEngine__Transform_IsChildOf(this, arg0);
+	}
+	UnityEngine::Transform GetChild(int arg0)
+	{
+		return UnityEngine__Transform_GetChild(this, arg0);
+	}
+}
+
+namespace UnityEngine::Transform
+{
+}
+
+
+namespace UnityEngine::Space
+{
+	const int World = 0;
+	const int Self = 1;
+}
+namespace UnityEngine::IMECompositionMode
+{
+	const int Auto = 0;
+	const int On = 1;
+	const int Off = 2;
+}
+namespace UnityEngine::DeviceOrientation
+{
+	const int Unknown = 0;
+	const int Portrait = 1;
+	const int PortraitUpsideDown = 2;
+	const int LandscapeLeft = 3;
+	const int LandscapeRight = 4;
+	const int FaceUp = 5;
+	const int FaceDown = 6;
+}
+namespace UnityEngine::LocationServiceStatus
+{
+	const int Stopped = 0;
+	const int Initializing = 1;
+	const int Running = 2;
+	const int Failed = 3;
+}
+namespace UnityEngine::TouchPhase
+{
+	const int Began = 0;
+	const int Moved = 1;
+	const int Stationary = 2;
+	const int Ended = 3;
+	const int Canceled = 4;
+}
+namespace UnityEngine::TouchType
+{
+	const int Direct = 0;
+	const int Indirect = 1;
+	const int Stylus = 2;
+}
+namespace UnityEngine::KeyCode
+{
+	const int None = 0;
+	const int Backspace = 8;
+	const int Tab = 9;
+	const int Clear = 12;
+	const int Return = 13;
+	const int Pause = 19;
+	const int Escape = 27;
+	const int Space = 32;
+	const int Exclaim = 33;
+	const int DoubleQuote = 34;
+	const int Hash = 35;
+	const int Dollar = 36;
+	const int Percent = 37;
+	const int Ampersand = 38;
+	const int Quote = 39;
+	const int LeftParen = 40;
+	const int RightParen = 41;
+	const int Asterisk = 42;
+	const int Plus = 43;
+	const int Comma = 44;
+	const int Minus = 45;
+	const int Period = 46;
+	const int Slash = 47;
+	const int Alpha0 = 48;
+	const int Alpha1 = 49;
+	const int Alpha2 = 50;
+	const int Alpha3 = 51;
+	const int Alpha4 = 52;
+	const int Alpha5 = 53;
+	const int Alpha6 = 54;
+	const int Alpha7 = 55;
+	const int Alpha8 = 56;
+	const int Alpha9 = 57;
+	const int Colon = 58;
+	const int Semicolon = 59;
+	const int Less = 60;
+	const int Equals = 61;
+	const int Greater = 62;
+	const int Question = 63;
+	const int At = 64;
+	const int LeftBracket = 91;
+	const int Backslash = 92;
+	const int RightBracket = 93;
+	const int Caret = 94;
+	const int Underscore = 95;
+	const int BackQuote = 96;
+	const int A = 97;
+	const int B = 98;
+	const int C = 99;
+	const int D = 100;
+	const int E = 101;
+	const int F = 102;
+	const int G = 103;
+	const int H = 104;
+	const int I = 105;
+	const int J = 106;
+	const int K = 107;
+	const int L = 108;
+	const int M = 109;
+	const int N = 110;
+	const int O = 111;
+	const int P = 112;
+	const int Q = 113;
+	const int R = 114;
+	const int S = 115;
+	const int T = 116;
+	const int U = 117;
+	const int V = 118;
+	const int W = 119;
+	const int X = 120;
+	const int Y = 121;
+	const int Z = 122;
+	const int LeftCurlyBracket = 123;
+	const int Pipe = 124;
+	const int RightCurlyBracket = 125;
+	const int Tilde = 126;
+	const int Delete = 127;
+	const int Keypad0 = 256;
+	const int Keypad1 = 257;
+	const int Keypad2 = 258;
+	const int Keypad3 = 259;
+	const int Keypad4 = 260;
+	const int Keypad5 = 261;
+	const int Keypad6 = 262;
+	const int Keypad7 = 263;
+	const int Keypad8 = 264;
+	const int Keypad9 = 265;
+	const int KeypadPeriod = 266;
+	const int KeypadDivide = 267;
+	const int KeypadMultiply = 268;
+	const int KeypadMinus = 269;
+	const int KeypadPlus = 270;
+	const int KeypadEnter = 271;
+	const int KeypadEquals = 272;
+	const int UpArrow = 273;
+	const int DownArrow = 274;
+	const int RightArrow = 275;
+	const int LeftArrow = 276;
+	const int Insert = 277;
+	const int Home = 278;
+	const int End = 279;
+	const int PageUp = 280;
+	const int PageDown = 281;
+	const int F1 = 282;
+	const int F2 = 283;
+	const int F3 = 284;
+	const int F4 = 285;
+	const int F5 = 286;
+	const int F6 = 287;
+	const int F7 = 288;
+	const int F8 = 289;
+	const int F9 = 290;
+	const int F10 = 291;
+	const int F11 = 292;
+	const int F12 = 293;
+	const int F13 = 294;
+	const int F14 = 295;
+	const int F15 = 296;
+	const int Numlock = 300;
+	const int CapsLock = 301;
+	const int ScrollLock = 302;
+	const int RightShift = 303;
+	const int LeftShift = 304;
+	const int RightControl = 305;
+	const int LeftControl = 306;
+	const int RightAlt = 307;
+	const int LeftAlt = 308;
+	const int RightMeta = 309;
+	const int RightMeta = 309;
+	const int RightMeta = 309;
+	const int LeftApple = 310;
+	const int LeftApple = 310;
+	const int LeftApple = 310;
+	const int LeftWindows = 311;
+	const int RightWindows = 312;
+	const int AltGr = 313;
+	const int Help = 315;
+	const int Print = 316;
+	const int SysReq = 317;
+	const int Break = 318;
+	const int Menu = 319;
+	const int Mouse0 = 323;
+	const int Mouse1 = 324;
+	const int Mouse2 = 325;
+	const int Mouse3 = 326;
+	const int Mouse4 = 327;
+	const int Mouse5 = 328;
+	const int Mouse6 = 329;
+	const int JoystickButton0 = 330;
+	const int JoystickButton1 = 331;
+	const int JoystickButton2 = 332;
+	const int JoystickButton3 = 333;
+	const int JoystickButton4 = 334;
+	const int JoystickButton5 = 335;
+	const int JoystickButton6 = 336;
+	const int JoystickButton7 = 337;
+	const int JoystickButton8 = 338;
+	const int JoystickButton9 = 339;
+	const int JoystickButton10 = 340;
+	const int JoystickButton11 = 341;
+	const int JoystickButton12 = 342;
+	const int JoystickButton13 = 343;
+	const int JoystickButton14 = 344;
+	const int JoystickButton15 = 345;
+	const int JoystickButton16 = 346;
+	const int JoystickButton17 = 347;
+	const int JoystickButton18 = 348;
+	const int JoystickButton19 = 349;
+	const int Joystick1Button0 = 350;
+	const int Joystick1Button1 = 351;
+	const int Joystick1Button2 = 352;
+	const int Joystick1Button3 = 353;
+	const int Joystick1Button4 = 354;
+	const int Joystick1Button5 = 355;
+	const int Joystick1Button6 = 356;
+	const int Joystick1Button7 = 357;
+	const int Joystick1Button8 = 358;
+	const int Joystick1Button9 = 359;
+	const int Joystick1Button10 = 360;
+	const int Joystick1Button11 = 361;
+	const int Joystick1Button12 = 362;
+	const int Joystick1Button13 = 363;
+	const int Joystick1Button14 = 364;
+	const int Joystick1Button15 = 365;
+	const int Joystick1Button16 = 366;
+	const int Joystick1Button17 = 367;
+	const int Joystick1Button18 = 368;
+	const int Joystick1Button19 = 369;
+	const int Joystick2Button0 = 370;
+	const int Joystick2Button1 = 371;
+	const int Joystick2Button2 = 372;
+	const int Joystick2Button3 = 373;
+	const int Joystick2Button4 = 374;
+	const int Joystick2Button5 = 375;
+	const int Joystick2Button6 = 376;
+	const int Joystick2Button7 = 377;
+	const int Joystick2Button8 = 378;
+	const int Joystick2Button9 = 379;
+	const int Joystick2Button10 = 380;
+	const int Joystick2Button11 = 381;
+	const int Joystick2Button12 = 382;
+	const int Joystick2Button13 = 383;
+	const int Joystick2Button14 = 384;
+	const int Joystick2Button15 = 385;
+	const int Joystick2Button16 = 386;
+	const int Joystick2Button17 = 387;
+	const int Joystick2Button18 = 388;
+	const int Joystick2Button19 = 389;
+	const int Joystick3Button0 = 390;
+	const int Joystick3Button1 = 391;
+	const int Joystick3Button2 = 392;
+	const int Joystick3Button3 = 393;
+	const int Joystick3Button4 = 394;
+	const int Joystick3Button5 = 395;
+	const int Joystick3Button6 = 396;
+	const int Joystick3Button7 = 397;
+	const int Joystick3Button8 = 398;
+	const int Joystick3Button9 = 399;
+	const int Joystick3Button10 = 400;
+	const int Joystick3Button11 = 401;
+	const int Joystick3Button12 = 402;
+	const int Joystick3Button13 = 403;
+	const int Joystick3Button14 = 404;
+	const int Joystick3Button15 = 405;
+	const int Joystick3Button16 = 406;
+	const int Joystick3Button17 = 407;
+	const int Joystick3Button18 = 408;
+	const int Joystick3Button19 = 409;
+	const int Joystick4Button0 = 410;
+	const int Joystick4Button1 = 411;
+	const int Joystick4Button2 = 412;
+	const int Joystick4Button3 = 413;
+	const int Joystick4Button4 = 414;
+	const int Joystick4Button5 = 415;
+	const int Joystick4Button6 = 416;
+	const int Joystick4Button7 = 417;
+	const int Joystick4Button8 = 418;
+	const int Joystick4Button9 = 419;
+	const int Joystick4Button10 = 420;
+	const int Joystick4Button11 = 421;
+	const int Joystick4Button12 = 422;
+	const int Joystick4Button13 = 423;
+	const int Joystick4Button14 = 424;
+	const int Joystick4Button15 = 425;
+	const int Joystick4Button16 = 426;
+	const int Joystick4Button17 = 427;
+	const int Joystick4Button18 = 428;
+	const int Joystick4Button19 = 429;
+	const int Joystick5Button0 = 430;
+	const int Joystick5Button1 = 431;
+	const int Joystick5Button2 = 432;
+	const int Joystick5Button3 = 433;
+	const int Joystick5Button4 = 434;
+	const int Joystick5Button5 = 435;
+	const int Joystick5Button6 = 436;
+	const int Joystick5Button7 = 437;
+	const int Joystick5Button8 = 438;
+	const int Joystick5Button9 = 439;
+	const int Joystick5Button10 = 440;
+	const int Joystick5Button11 = 441;
+	const int Joystick5Button12 = 442;
+	const int Joystick5Button13 = 443;
+	const int Joystick5Button14 = 444;
+	const int Joystick5Button15 = 445;
+	const int Joystick5Button16 = 446;
+	const int Joystick5Button17 = 447;
+	const int Joystick5Button18 = 448;
+	const int Joystick5Button19 = 449;
+	const int Joystick6Button0 = 450;
+	const int Joystick6Button1 = 451;
+	const int Joystick6Button2 = 452;
+	const int Joystick6Button3 = 453;
+	const int Joystick6Button4 = 454;
+	const int Joystick6Button5 = 455;
+	const int Joystick6Button6 = 456;
+	const int Joystick6Button7 = 457;
+	const int Joystick6Button8 = 458;
+	const int Joystick6Button9 = 459;
+	const int Joystick6Button10 = 460;
+	const int Joystick6Button11 = 461;
+	const int Joystick6Button12 = 462;
+	const int Joystick6Button13 = 463;
+	const int Joystick6Button14 = 464;
+	const int Joystick6Button15 = 465;
+	const int Joystick6Button16 = 466;
+	const int Joystick6Button17 = 467;
+	const int Joystick6Button18 = 468;
+	const int Joystick6Button19 = 469;
+	const int Joystick7Button0 = 470;
+	const int Joystick7Button1 = 471;
+	const int Joystick7Button2 = 472;
+	const int Joystick7Button3 = 473;
+	const int Joystick7Button4 = 474;
+	const int Joystick7Button5 = 475;
+	const int Joystick7Button6 = 476;
+	const int Joystick7Button7 = 477;
+	const int Joystick7Button8 = 478;
+	const int Joystick7Button9 = 479;
+	const int Joystick7Button10 = 480;
+	const int Joystick7Button11 = 481;
+	const int Joystick7Button12 = 482;
+	const int Joystick7Button13 = 483;
+	const int Joystick7Button14 = 484;
+	const int Joystick7Button15 = 485;
+	const int Joystick7Button16 = 486;
+	const int Joystick7Button17 = 487;
+	const int Joystick7Button18 = 488;
+	const int Joystick7Button19 = 489;
+	const int Joystick8Button0 = 490;
+	const int Joystick8Button1 = 491;
+	const int Joystick8Button2 = 492;
+	const int Joystick8Button3 = 493;
+	const int Joystick8Button4 = 494;
+	const int Joystick8Button5 = 495;
+	const int Joystick8Button6 = 496;
+	const int Joystick8Button7 = 497;
+	const int Joystick8Button8 = 498;
+	const int Joystick8Button9 = 499;
+	const int Joystick8Button10 = 500;
+	const int Joystick8Button11 = 501;
+	const int Joystick8Button12 = 502;
+	const int Joystick8Button13 = 503;
+	const int Joystick8Button14 = 504;
+	const int Joystick8Button15 = 505;
+	const int Joystick8Button16 = 506;
+	const int Joystick8Button17 = 507;
+	const int Joystick8Button18 = 508;
+	const int Joystick8Button19 = 509;
+}
+namespace UnityEngine::SendMessageOptions
+{
+	const int RequireReceiver = 0;
+	const int DontRequireReceiver = 1;
+}
+namespace UnityEngine::PrimitiveType
+{
+	const int Sphere = 0;
+	const int Capsule = 1;
+	const int Cylinder = 2;
+	const int Cube = 3;
+	const int Plane = 4;
+	const int Quad = 5;
+}

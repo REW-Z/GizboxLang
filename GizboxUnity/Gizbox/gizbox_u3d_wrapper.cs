@@ -18,6 +18,14 @@ public class gizbox_u3d_wrapper
 	{
 		obj.name = newv;
 	}
+	public static int UnityEngine__Object_get_hideFlags(UnityEngine.Object obj)
+	{
+		return (int)obj.hideFlags;
+	}
+	public static void UnityEngine__Object_set_hideFlags(UnityEngine.Object obj, int newv)
+	{
+		obj.hideFlags = (UnityEngine.HideFlags)newv;
+	}
 	public static System.Int32 UnityEngine__Object_GetInstanceID(UnityEngine.Object arg0)
 	{
 		return arg0.GetInstanceID();
@@ -118,13 +126,25 @@ public class gizbox_u3d_wrapper
 	{
 		return UnityEngine.Input.GetAccelerationEvent(arg0);
 	}
+	public static System.Boolean UnityEngine__Input_GetKey_Static(int arg0)
+	{
+		return UnityEngine.Input.GetKey((UnityEngine.KeyCode)arg0);
+	}
 	public static System.Boolean UnityEngine__Input_GetKey_Static(System.String arg0)
 	{
 		return UnityEngine.Input.GetKey(arg0);
 	}
+	public static System.Boolean UnityEngine__Input_GetKeyUp_Static(int arg0)
+	{
+		return UnityEngine.Input.GetKeyUp((UnityEngine.KeyCode)arg0);
+	}
 	public static System.Boolean UnityEngine__Input_GetKeyUp_Static(System.String arg0)
 	{
 		return UnityEngine.Input.GetKeyUp(arg0);
+	}
+	public static System.Boolean UnityEngine__Input_GetKeyDown_Static(int arg0)
+	{
+		return UnityEngine.Input.GetKeyDown((UnityEngine.KeyCode)arg0);
 	}
 	public static System.Boolean UnityEngine__Input_GetKeyDown_Static(System.String arg0)
 	{
@@ -133,6 +153,10 @@ public class gizbox_u3d_wrapper
 	public static System.Boolean UnityEngine__LocationService_get_isEnabledByUser(UnityEngine.LocationService obj)
 	{
 		return obj.isEnabledByUser;
+	}
+	public static int UnityEngine__LocationService_get_status(UnityEngine.LocationService obj)
+	{
+		return (int)obj.status;
 	}
 	public static UnityEngine.LocationInfo UnityEngine__LocationService_get_lastData(UnityEngine.LocationService obj)
 	{
@@ -798,6 +822,18 @@ public class gizbox_u3d_wrapper
 	{
 		return arg0.GetComponent(arg1);
 	}
+	public static void UnityEngine__GameObject_SendMessageUpwards(UnityEngine.GameObject arg0, System.String arg1, int arg2)
+	{
+		arg0.SendMessageUpwards(arg1, (UnityEngine.SendMessageOptions)arg2);
+	}
+	public static void UnityEngine__GameObject_SendMessage(UnityEngine.GameObject arg0, System.String arg1, int arg2)
+	{
+		arg0.SendMessage(arg1, (UnityEngine.SendMessageOptions)arg2);
+	}
+	public static void UnityEngine__GameObject_BroadcastMessage(UnityEngine.GameObject arg0, System.String arg1, int arg2)
+	{
+		arg0.BroadcastMessage(arg1, (UnityEngine.SendMessageOptions)arg2);
+	}
 	public static void UnityEngine__GameObject_SetActive(UnityEngine.GameObject arg0, System.Boolean arg1)
 	{
 		arg0.SetActive(arg1);
@@ -817,6 +853,10 @@ public class gizbox_u3d_wrapper
 	public static void UnityEngine__GameObject_BroadcastMessage(UnityEngine.GameObject arg0, System.String arg1)
 	{
 		arg0.BroadcastMessage(arg1);
+	}
+	public static UnityEngine.GameObject UnityEngine__GameObject_CreatePrimitive_Static(int arg0)
+	{
+		return UnityEngine.GameObject.CreatePrimitive((UnityEngine.PrimitiveType)arg0);
 	}
 	public static UnityEngine.GameObject UnityEngine__GameObject_FindWithTag_Static(System.String arg0)
 	{
@@ -858,13 +898,25 @@ public class gizbox_u3d_wrapper
 	{
 		arg0.SendMessageUpwards(arg1);
 	}
+	public static void UnityEngine__Component_SendMessageUpwards(UnityEngine.Component arg0, System.String arg1, int arg2)
+	{
+		arg0.SendMessageUpwards(arg1, (UnityEngine.SendMessageOptions)arg2);
+	}
 	public static void UnityEngine__Component_SendMessage(UnityEngine.Component arg0, System.String arg1)
 	{
 		arg0.SendMessage(arg1);
 	}
+	public static void UnityEngine__Component_SendMessage(UnityEngine.Component arg0, System.String arg1, int arg2)
+	{
+		arg0.SendMessage(arg1, (UnityEngine.SendMessageOptions)arg2);
+	}
 	public static void UnityEngine__Component_BroadcastMessage(UnityEngine.Component arg0, System.String arg1)
 	{
 		arg0.BroadcastMessage(arg1);
+	}
+	public static void UnityEngine__Component_BroadcastMessage(UnityEngine.Component arg0, System.String arg1, int arg2)
+	{
+		arg0.BroadcastMessage(arg1, (UnityEngine.SendMessageOptions)arg2);
 	}
 	public static UnityEngine.Vector3 UnityEngine__Transform_get_position(UnityEngine.Transform obj)
 	{
@@ -1006,9 +1058,17 @@ public class gizbox_u3d_wrapper
 	{
 		arg0.SetPositionAndRotation(arg1, arg2);
 	}
+	public static void UnityEngine__Transform_Translate(UnityEngine.Transform arg0, UnityEngine.Vector3 arg1, int arg2)
+	{
+		arg0.Translate(arg1, (UnityEngine.Space)arg2);
+	}
 	public static void UnityEngine__Transform_Translate(UnityEngine.Transform arg0, UnityEngine.Vector3 arg1)
 	{
 		arg0.Translate(arg1);
+	}
+	public static void UnityEngine__Transform_Translate(UnityEngine.Transform arg0, System.Single arg1, System.Single arg2, System.Single arg3, int arg4)
+	{
+		arg0.Translate(arg1, arg2, arg3, (UnityEngine.Space)arg4);
 	}
 	public static void UnityEngine__Transform_Translate(UnityEngine.Transform arg0, System.Single arg1, System.Single arg2, System.Single arg3)
 	{
@@ -1022,13 +1082,25 @@ public class gizbox_u3d_wrapper
 	{
 		arg0.Translate(arg1, arg2, arg3, arg4);
 	}
+	public static void UnityEngine__Transform_Rotate(UnityEngine.Transform arg0, UnityEngine.Vector3 arg1, int arg2)
+	{
+		arg0.Rotate(arg1, (UnityEngine.Space)arg2);
+	}
 	public static void UnityEngine__Transform_Rotate(UnityEngine.Transform arg0, UnityEngine.Vector3 arg1)
 	{
 		arg0.Rotate(arg1);
 	}
+	public static void UnityEngine__Transform_Rotate(UnityEngine.Transform arg0, System.Single arg1, System.Single arg2, System.Single arg3, int arg4)
+	{
+		arg0.Rotate(arg1, arg2, arg3, (UnityEngine.Space)arg4);
+	}
 	public static void UnityEngine__Transform_Rotate(UnityEngine.Transform arg0, System.Single arg1, System.Single arg2, System.Single arg3)
 	{
 		arg0.Rotate(arg1, arg2, arg3);
+	}
+	public static void UnityEngine__Transform_Rotate(UnityEngine.Transform arg0, UnityEngine.Vector3 arg1, System.Single arg2, int arg3)
+	{
+		arg0.Rotate(arg1, arg2, (UnityEngine.Space)arg3);
 	}
 	public static void UnityEngine__Transform_Rotate(UnityEngine.Transform arg0, UnityEngine.Vector3 arg1, System.Single arg2)
 	{
