@@ -8,12 +8,9 @@ using Collections;
 
 GC::Enable();
 
-Console::Log("SAA");
-
 class Person
 {
     string name = "";
 }
 //afff
 Person sam = new Person();
-

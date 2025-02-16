@@ -4,7 +4,7 @@ import * as path from 'path';
 import { DidChangeWorkspaceFoldersNotification, LanguageClientOptions, SynchronizeOptions, WorkspaceFolder} from 'vscode-languageclient';
 import { LanguageClient, ServerOptions, TransportKind} from 'vscode-languageclient/node';
 import { channel } from 'diagnostics_channel';
-import { json } from 'stream/consumers';
+import { json, text } from 'stream/consumers';
 import { start } from 'repl';
 import { stringify } from 'querystring';
 import { log } from 'console';
@@ -12,13 +12,16 @@ import { log } from 'console';
 
 //客户端  
 let client: LanguageClient;
+let clientRunning : boolean = false;
 
 //自动补全提供器  
 let completionProvider: vscode.Disposable | undefined;
 
-//当前文本  
-let currentGizDocument : vscode.TextDocument;
+//当前文本编辑器    
+let currentTextEditor : vscode.TextEditor | undefined;
 
+//Timeout相关  
+let fullContentUpdateByIntervalTimeout : NodeJS.Timeout | undefined = undefined;
 
 //高亮   
 // 类名  
@@ -49,129 +52,63 @@ let timerUpdateCompletion : number = -1;
 let output : vscode.OutputChannel = vscode.window.createOutputChannel("Gizbox");
 
 
-
 //激活扩展  
 export function activate(context: vscode.ExtensionContext) {
 
-    // 确保路径正确
-    const serverModule = context.asAbsolutePath(path.join('bin', 'GizboxLSP.dll'));
+    output.appendLine("*** gizbox extension activate ***" + (new Date()).toLocaleString());
 
-    const serverOptions: ServerOptions = {
-        run: { command: 'dotnet', args: [serverModule] },
-        debug: { command: 'dotnet', args: [serverModule] }
-    };
-
-
-    const clientOptions: LanguageClientOptions = {
-        documentSelector: [{ scheme: 'file', language: 'text/plain' }],
-        synchronize: {
-            fileEvents: vscode.workspace.createFileSystemWatcher('**/.gix')
-        },
-        outputChannelName: 'GizboxLang Server',
-        traceOutputChannel: vscode.window.createOutputChannel('GizboxLang Server Trace'),
-        initializationOptions:{
-            //...其他信息    
-        }
-    };
-
-    client = new LanguageClient(
-        'langServer',
-        'GizboxLang Server',
-        serverOptions,
-        clientOptions
-    );
-
-
-    
-
-    //活动的编辑器文本打开事件
-    //vscode.workspace.onDidOpenTextDocument
-    vscode.window.onDidChangeActiveTextEditor((teditor : any) => {
+    //启动client
+    //（REW: 貌似只有第一次进入gix文档会调用该函数来激活扩展）     
+    {
+        //设置当前文档  
+        currentTextEditor = vscode.window.activeTextEditor;
+        //同步新文档
         const isGizbox = vscode.window.activeTextEditor?.document.languageId === 'gizbox';
-        if(isGizbox)
-        {
-            // vscode.window.showInformationMessage("进入新的Giz文档");
-
-            //高亮刷新  
-            setTimeout(() => {
-                if (vscode.window.activeTextEditor?.document != null) {
-                    
-                    const params = {
-                        textDocument: { uri: vscode.window.activeTextEditor?.document.uri.toString() },
-                        position: { line: 0, character: 0 }
-                    };
-                    client.sendRequest('textDocument/documentHighlight', params).then((highlights) => {
-                        const editor = vscode.window.activeTextEditor;
-                        ApplyHighlights(editor, highlights);
-
-                        // vscode.window.showInformationMessage(JSON.stringify(highlights));
-                    }, error => {
-                        // vscode.window.showInformationMessage(error);
-                        output.appendLine("error:" + error);
-                    });
-                }
-            }, 500);
-            
+        if(isGizbox){
+            ClientStart(context);
+            StartSyncDocument(currentTextEditor);
         }
+        else{ throw "错误的扩展激活？？"; }
+    }
 
+
+
+    //所有Visible编辑器改变事件  
+    //（REW:output窗口也是文件编辑器）  
+    //（REW:切换或打开文本标签页会触发，触发时activeTextEditor已更新）    
+    vscode.window.onDidChangeVisibleTextEditors((veditors : readonly vscode.TextEditor[]) => {
+        output.appendLine("VisibleTextEditors Changed:" + veditors.map(e => e?.document.fileName + ", ") + "  语言类型" + veditors.map(e => e?.document.languageId + ", "));
+        output.appendLine("Current LanguageID" + vscode.window.activeTextEditor?.document.languageId);
+        OnChangeDocument(context);
     });
-
-
-
-    //客户端启动  
-    var promise = client.start();
-
-    //Start  
-    ClientStart();
-
-    //开始Update  
-    const deltatime = 100;
-    setInterval(() => {
-        ClientUpdate(deltatime);
-    }, deltatime);
-
 
     //文本改变事件监听  
     vscode.workspace.onDidChangeTextDocument(event => {
 
         const contentChanges = event.contentChanges;
         const document = event.document;
-        const isGizbox = document.languageId === 'gizbox';
 
-        if (isGizbox === false) return;
+        if (document.languageId != 'gizbox') return;
 
-        if (contentChanges.length > 0) {
-            
+        if (currentTextEditor?.document != event.document) return;
+
+        if (contentChanges.length > 0) 
+        {
             //增量同步 
-            const params = {
-                textDocument: { uri: event.document.uri.toString() },
-                contentChanges: contentChanges.map(change => ({
-                    range: {
-                        start: { line: change.range.start.line, character: change.range.start.character },
-                        end: { line: change.range.end.line, character: change.range.end.character }
-                    },
-                    rangeLength: change.rangeLength,
-                    text: change.text,
-                    debug:"didChange: start line:" + change.range.start.line
-                }))
-            };
-            client.sendNotification('textDocument/didChange', params);
-            output.appendLine("增量更新");
-            // output.appendLine("send didChangeParam:\n\n" + JSON.stringify(params));
-
-
-            const lastChange = contentChanges[contentChanges.length - 1];
+            Request_IncrementalContentUpdate(currentTextEditor, contentChanges);
+            
             //update中  请求Highlight   
+            const lastChange = contentChanges[contentChanges.length - 1];
+            if(currentTextEditor?.document === event.document)
             {
                 if (timerUpdateHightlight < 0.0) {
                     updateHightlightCallback = (() => {
                         const position = lastChange.range.end;
-                        Request_Highlight(document, position);
+                        Request_Highlight(currentTextEditor, position);
                     });
                 }
                 timerUpdateHightlight = 500;
             }
-
 
             //update中  请求Completion   
             {
@@ -198,68 +135,142 @@ export function activate(context: vscode.ExtensionContext) {
                 }
                 timerUpdateCompletion = 500;
             }
-
-
-            // // 如果输入分割字符  补全  
-            // const text = contentChanges[0].text;
-            // const rangeLength = contentChanges[0].rangeLength;
-            // if (rangeLength > 0 || text.endsWith('.')|| text.endsWith(';') || text.endsWith(':') || text.endsWith(' ') || text.endsWith('\n') || /\s/.test(text)) {
-                    
-            // }
         }
     });
 
+
+    //Active文本编辑器改变事件（聚焦事件）  
+    // （REW：聚焦会触发一次 ->neweditor)（聚焦output等窗口也会发生改变，所以不怎么适用）  
+    // （REW：打开窗口触发两次 ->undefine->neweditor）  
+    // vscode.window.onDidChangeActiveTextEditor((teditor : any) => {
+    //     output.appendLine("聚焦:" + vscode.window.activeTextEditor?.document.fileName);
+    // });
+    
+    // //notebook是指".ipynb"等文件类型的编辑器    
+    // vscode.window.onDidChangeActiveNotebookEditor((neditor: any) => {
+    // });
+
 }
 
-function ClientStart()
-{    
-    output.appendLine("Client Start");
+function OnChangeDocument(context : vscode.ExtensionContext) : void
+{
+    if(vscode.window.activeTextEditor == currentTextEditor) return;
+
+    //设置CurrentTextEditor    
+    let prevTextEditor = currentTextEditor;
+    currentTextEditor = vscode.window.activeTextEditor;
+    
+    //启动或者终止客户端  
+    let anyGizboxDocument = false;
+    let currIsGizbox = currentTextEditor?.document.languageId === 'gizbox';
+    for(let i = 0; i < vscode.window.visibleTextEditors.length; ++i)
+    {
+        if(vscode.window.visibleTextEditors[i]?.document.languageId === 'gizbox')
+        {
+            anyGizboxDocument = true;
+            break;
+        }
+    }
+    if(anyGizboxDocument === true && clientRunning === false)
+    {
+        output.appendLine("启动Client");
+        ClientStart(context);
+        output.appendLine("启动Client完毕...");
+    }
+    else if(anyGizboxDocument === false && clientRunning === true)
+    {
+        ClientEnd();
+    }
+
+    //重新同步文档(新的gix文档时)    
+    if(prevTextEditor != currentTextEditor && currIsGizbox)
+    {
+        output.appendLine("同步gix文档中...");
+        //开始同步文档  
+        StartSyncDocument(currentTextEditor);
+        output.appendLine("同步文档完毕...");
+    }
+}
+
+function StartSyncDocument(teditor:vscode.TextEditor | undefined) : void
+{
+    if(teditor === undefined) return;
+    
+    clearInterval(fullContentUpdateByIntervalTimeout);
+
+
+    //请求服务器打开文档  
+    Request_OpenDoc(teditor);  
+
+    //首次刷新高亮  
+    Request_Highlight(teditor, {line:0, character:0});
+    output.appendLine("初始全量更新...");
+
+
+    //每10秒全量更新(同时刷新高亮)     
+    fullContentUpdateByIntervalTimeout = setInterval(() => {
+        if(teditor === currentTextEditor)
+        {
+            Request_FullContentUpdate(teditor);
+            Request_Highlight(teditor, {line:0, character:0});
+            output.appendLine("计时全量更新成功...");
+        }
+    }, 10000);
+}
+
+
+function ClientStart(context: vscode.ExtensionContext)
+{
+    if(clientRunning === true) return;
+
+    // 确保路径正确
+    const serverModule = context.asAbsolutePath(path.join('bin', 'GizboxLSP.dll'));
+
+    //创建客户端  
+    const serverOptions: ServerOptions = {
+        run: { command: 'dotnet', args: [serverModule] },
+        debug: { command: 'dotnet', args: [serverModule] }
+    };
+    const clientOptions: LanguageClientOptions = {
+        documentSelector: [{ scheme: 'file', language: 'text/plain' }],
+        synchronize: {
+            fileEvents: vscode.workspace.createFileSystemWatcher('**/.gix')
+        },
+        outputChannelName: 'GizboxLang Server',
+        traceOutputChannel: vscode.window.createOutputChannel('GizboxLang Server Trace'),
+        initializationOptions:{
+            //...其他信息    
+        }
+    };
+    client = new LanguageClient(
+        'langServer',
+        'GizboxLang Server',
+        serverOptions,
+        clientOptions
+    );
+
+    //客户端启动  
+    var promise = client.start();
+
+    clientRunning = true;
+
 
     //截获Log  
     client.onNotification("debug/log", (params) => {
         output.appendLine("server log >>> " + params.text);
-    })
+    });
 
-
-    output.appendLine("hightlight刷新");
-
-    //初始全量更新一次(同时刷新高亮)   
-    setTimeout(() => {
-        output.appendLine("初始全量更新...");
-        TrySetCurrentGizTextDocument();
-        if(currentGizDocument != null)
-        {
-            Request_FullContentUpdate();
-            output.appendLine("初始全量更新完成...");
-        }
-        else
-        {
-            output.appendLine("初始全量更新失败, 当前文档为null");
-        }
-    }, 2500);
-    setTimeout(() => {
-        if(currentGizDocument != null)
-        {
-            Request_Highlight(currentGizDocument, {line:0, character:0});
-        }
-    }, 3500);
-
-
-    //每10秒全量更新(同时刷新高亮)     
+    
+    //开始Update  
+    const deltatime = 100;
     setInterval(() => {
-        output.appendLine("计时全量更新");
-        TrySetCurrentGizTextDocument();
-        if(currentGizDocument != null)
-        {
-            Request_FullContentUpdate();
-            Request_Highlight(currentGizDocument, {line:0, character:0});
-            output.appendLine("计时全量更新成功...");
-        }
-        else
-        {
-            output.appendLine("计时全量更新失败, 当前文档为空...");
-        }
-    }, 10000);
+        ClientUpdate(deltatime);
+    }, deltatime);
+
+    
+
+
+    output.appendLine("*** gizbox client started ***" + (new Date()).toLocaleString());
 }
 
 //Update  
@@ -287,57 +298,93 @@ function ClientUpdate(deltatime : number)
     }
 }
 
-
-//设置当前文档  
-function TrySetCurrentGizTextDocument()
+function ClientEnd(): Thenable<void> | undefined
 {
-    const editor = vscode.window.activeTextEditor;
-    if(editor?.document.languageId === "gizbox")
-    {
-        currentGizDocument = editor.document;
+    if (!client) {
+        return undefined;
     }
+    if(clientRunning === false){
+        return undefined;
+    }
+
+    //关闭定时全量同步  
+    clearInterval(fullContentUpdateByIntervalTimeout);
+
+    //关闭客户端和服务器  
+    let then = client.stop();
+    clientRunning = false;
+    client.dispose();
+
+    
+    output.appendLine("*** gizbox client end ***" + (new Date()).toLocaleString());
+    return then;
 }
 
-//全量更新  
-function Request_FullContentUpdate()
+function Request_OpenDoc(teditor : vscode.TextEditor | undefined)
 {
     const params = {
         textDocument: 
         { 
-            uri: currentGizDocument.uri.toString()
+            uri: teditor?.document?.uri.toString(),
+            text: teditor?.document?.getText(),
+        }
+    };
+    client.sendNotification('textDocument/didOpen', params);
+}
+
+//全量同步    
+function Request_FullContentUpdate(teditor : vscode.TextEditor | undefined)
+{
+    const params = {
+        textDocument: 
+        { 
+            uri: teditor?.document?.uri.toString()
         },
         contentChanges: [
             {
-                text: currentGizDocument.getText(),
+                text: teditor?.document?.getText(),
             }
         ] 
     };
     client.sendNotification('textDocument/didChange', params);
-    
-    // vscode.window.showInformationMessage("Full Update");
+}
+
+//增量同步 
+function Request_IncrementalContentUpdate(teditor : vscode.TextEditor | undefined,  contentChanges : readonly vscode.TextDocumentContentChangeEvent[])
+{
+    const params = {
+        textDocument: { uri: teditor?.document.uri.toString() },
+        contentChanges: contentChanges.map(change => ({
+            range: {
+                start: { line: change.range.start.line, character: change.range.start.character },
+                end: { line: change.range.end.line, character: change.range.end.character }
+            },
+            rangeLength: change.rangeLength,
+            text: change.text,
+            debug:"didChange: start line:" + change.range.start.line
+        }))
+    };
+    client.sendNotification('textDocument/didChange', params);
 }
 
 //Highlight请求  
-function Request_Highlight(document: vscode.TextDocument, position : any)
+function Request_Highlight(teditor: vscode.TextEditor | undefined, position : any)
 {
     const params = {
-        textDocument: { uri: document.uri.toString() },
+        textDocument: { uri: teditor?.document.uri.toString() },
         position: { line: position.line, character: position.character + 1 }
     };
     
     client.sendRequest('textDocument/documentHighlight', params).then((highlights) => {
-        
-        const editor = vscode.window.activeTextEditor;
-        ApplyHighlights(editor, highlights);
+        ApplyHighlights(teditor, highlights);
 
     }, error => {
-        // vscode.window.showInformationMessage(error);
         output.appendLine("request highlight err:" + error);
     });
 }
 
 //应用Highlight  
-function ApplyHighlights(editor: any, highlights: unknown) {
+function ApplyHighlights(teditor: vscode.TextEditor | undefined, highlights: unknown) {
     if (Array.isArray(highlights) && highlights.length > 0)
     {
         output.appendLine("---Apply Highlights  length:" + highlights.length);
@@ -346,7 +393,7 @@ function ApplyHighlights(editor: any, highlights: unknown) {
         const literalDecorationOpts: vscode.DecorationOptions[] = [];
         const namespaceDecorationOpts: vscode.DecorationOptions[] = [];
 
-        // vscode.window.showInformationMessage("apply count:" + highlights.length);
+
 
         let count : number = 1;
         highlights.forEach(highlight => {
@@ -379,10 +426,10 @@ function ApplyHighlights(editor: any, highlights: unknown) {
         });
 
         // 应用不同的装饰
-        editor.setDecorations(classNameDecoration, classNameDecorationOpts);
-        editor.setDecorations(variableAndMemberDecoration, variableDecorationOpts);
-        editor.setDecorations(literalDecoration, literalDecorationOpts);
-        editor.setDecorations(namespaceDecoration, namespaceDecorationOpts);
+        teditor?.setDecorations(classNameDecoration, classNameDecorationOpts);
+        teditor?.setDecorations(variableAndMemberDecoration, variableDecorationOpts);
+        teditor?.setDecorations(literalDecoration, literalDecorationOpts);
+        teditor?.setDecorations(namespaceDecoration, namespaceDecorationOpts);
     }
 }
 
@@ -419,11 +466,11 @@ function ApplyCompletionToProvider(context: vscode.ExtensionContext, completionI
 
 
 //终止  
-export function deactivate(): Thenable<void> | undefined {
-    if (!client) {
-        return undefined;
-    }
-    return client.stop();
+export function deactivate(): Thenable<void> | undefined 
+{
+    output.appendLine("*** gizbox extension deactivate ***" + (new Date()).toLocaleString());
+
+    return ClientEnd();
 }
 
 
