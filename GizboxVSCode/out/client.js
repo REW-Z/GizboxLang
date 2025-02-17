@@ -37,10 +37,12 @@ let updateCompletionCallback;
 let timerUpdateHightlight = -1;
 let timerUpdateCompletion = -1;
 //控制台  
-let output = vscode.window.createOutputChannel("Gizbox");
+let gizboxOutput = vscode.window.createOutputChannel("Gizbox");
+let clientOutputChannel = vscode.window.createOutputChannel('Gizbox Client Output');
+let clientTraceOuputChannel = vscode.window.createOutputChannel('GizboxLang Server Trace');
 //激活扩展  
 function activate(context) {
-    output.appendLine("*** gizbox extension activate ***" + (new Date()).toLocaleString());
+    gizboxOutput.appendLine("*** gizbox extension activate ***" + (new Date()).toLocaleString());
     //启动client
     //（REW: 貌似只有第一次进入gix文档会调用该函数来激活扩展）     
     {
@@ -59,9 +61,8 @@ function activate(context) {
     //所有Visible编辑器改变事件  
     //（REW:output窗口也是文件编辑器）  
     //（REW:切换或打开文本标签页会触发，触发时activeTextEditor已更新）    
+    //（REW:不同版本vscode不一样）  
     vscode.window.onDidChangeVisibleTextEditors((veditors) => {
-        output.appendLine("VisibleTextEditors Changed:" + veditors.map(e => e?.document.fileName + ", ") + "  语言类型" + veditors.map(e => e?.document.languageId + ", "));
-        output.appendLine("Current LanguageID" + vscode.window.activeTextEditor?.document.languageId);
         OnChangeDocument(context);
     });
     //文本改变事件监听  
@@ -124,32 +125,34 @@ exports.activate = activate;
 function OnChangeDocument(context) {
     if (vscode.window.activeTextEditor == currentTextEditor)
         return;
+    gizboxOutput.appendLine("workspace documents: " + vscode.workspace.textDocuments.map(doc => doc.languageId + ", "));
     //设置CurrentTextEditor    
     let prevTextEditor = currentTextEditor;
     currentTextEditor = vscode.window.activeTextEditor;
     //启动或者终止客户端  
     let anyGizboxDocument = false;
     let currIsGizbox = currentTextEditor?.document.languageId === 'gizbox';
-    for (let i = 0; i < vscode.window.visibleTextEditors.length; ++i) {
-        if (vscode.window.visibleTextEditors[i]?.document.languageId === 'gizbox') {
+    for (let i = 0; i < vscode.workspace.textDocuments.length; ++i) //vscode.window.visibleTextEditors存在问题，不同vscode版本好像不一样    
+     {
+        if (vscode.workspace.textDocuments[i].languageId === 'gizbox') {
             anyGizboxDocument = true;
             break;
         }
     }
     if (anyGizboxDocument === true && clientRunning === false) {
-        output.appendLine("启动Client");
+        gizboxOutput.appendLine("启动Client");
         ClientStart(context);
-        output.appendLine("启动Client完毕...");
+        gizboxOutput.appendLine("启动Client完毕...");
     }
     else if (anyGizboxDocument === false && clientRunning === true) {
         ClientEnd();
     }
     //重新同步文档(新的gix文档时)    
     if (prevTextEditor != currentTextEditor && currIsGizbox) {
-        output.appendLine("同步gix文档中...");
+        gizboxOutput.appendLine("同步gix文档中...");
         //开始同步文档  
         StartSyncDocument(currentTextEditor);
-        output.appendLine("同步文档完毕...");
+        gizboxOutput.appendLine("同步文档完毕...");
     }
 }
 function StartSyncDocument(teditor) {
@@ -160,13 +163,13 @@ function StartSyncDocument(teditor) {
     Request_OpenDoc(teditor);
     //首次刷新高亮  
     Request_Highlight(teditor, { line: 0, character: 0 });
-    output.appendLine("初始全量更新...");
+    gizboxOutput.appendLine("初始全量更新...");
     //每10秒全量更新(同时刷新高亮)     
     fullContentUpdateByIntervalTimeout = setInterval(() => {
         if (teditor === currentTextEditor) {
             Request_FullContentUpdate(teditor);
             Request_Highlight(teditor, { line: 0, character: 0 });
-            output.appendLine("计时全量更新成功...");
+            gizboxOutput.appendLine("计时全量更新成功...");
         }
     }, 10000);
 }
@@ -181,30 +184,32 @@ function ClientStart(context) {
         debug: { command: 'dotnet', args: [serverModule] }
     };
     const clientOptions = {
-        documentSelector: [{ scheme: 'file', language: 'text/plain' }],
+        documentSelector: [{ scheme: 'file', language: 'plaintext' }],
         synchronize: {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/.gix')
         },
-        outputChannelName: 'GizboxLang Server',
-        traceOutputChannel: vscode.window.createOutputChannel('GizboxLang Server Trace'),
+        // outputChannelName: 'GizboxLang Server' ,
+        outputChannel: clientOutputChannel,
+        traceOutputChannel: clientTraceOuputChannel,
         initializationOptions: {
         //...其他信息    
         }
     };
-    client = new node_1.LanguageClient('langServer', 'GizboxLang Server', serverOptions, clientOptions);
+    client = new node_1.LanguageClient('langServer', 'GizboxLang', serverOptions, clientOptions);
     //客户端启动  
     var promise = client.start();
     clientRunning = true;
+    gizboxOutput.appendLine("------------------ GIZBOX CLIENT START ------------------");
     //截获Log  
     client.onNotification("debug/log", (params) => {
-        output.appendLine("server log >>> " + params.text);
+        gizboxOutput.appendLine("server log >>> " + params.text);
     });
     //开始Update  
     const deltatime = 100;
     setInterval(() => {
         ClientUpdate(deltatime);
     }, deltatime);
-    output.appendLine("*** gizbox client started ***" + (new Date()).toLocaleString());
+    gizboxOutput.appendLine("*** gizbox client started ***" + (new Date()).toLocaleString());
 }
 //Update  
 function ClientUpdate(deltatime) {
@@ -224,19 +229,16 @@ function ClientUpdate(deltatime) {
     }
 }
 function ClientEnd() {
-    if (!client) {
-        return undefined;
-    }
     if (clientRunning === false) {
         return undefined;
     }
     //关闭定时全量同步  
     clearInterval(fullContentUpdateByIntervalTimeout);
     //关闭客户端和服务器  
-    let then = client.stop();
+    let then = client.dispose(4000);
+    // client.dispose();
     clientRunning = false;
-    client.dispose();
-    output.appendLine("*** gizbox client end ***" + (new Date()).toLocaleString());
+    gizboxOutput.appendLine("------------------ GIZBOX CLIENT END ------------------");
     return then;
 }
 function Request_OpenDoc(teditor) {
@@ -287,13 +289,13 @@ function Request_Highlight(teditor, position) {
     client.sendRequest('textDocument/documentHighlight', params).then((highlights) => {
         ApplyHighlights(teditor, highlights);
     }, error => {
-        output.appendLine("request highlight err:" + error);
+        gizboxOutput.appendLine("request highlight err:" + error);
     });
 }
 //应用Highlight  
 function ApplyHighlights(teditor, highlights) {
     if (Array.isArray(highlights) && highlights.length > 0) {
-        output.appendLine("---Apply Highlights  length:" + highlights.length);
+        gizboxOutput.appendLine("---Apply Highlights  length:" + highlights.length);
         const classNameDecorationOpts = [];
         const variableDecorationOpts = [];
         const literalDecorationOpts = [];
@@ -341,7 +343,7 @@ function ApplyCompletionToProvider(context, completionItems) {
         vsitm.insertText = item.insertText;
         return vsitm;
     });
-    output.appendLine("---Apply Completion  length:" + completionList.length);
+    gizboxOutput.appendLine("---Apply Completion  length:" + completionList.length);
     // 如果已经存在补全提供者，则清理它
     if (completionProvider) {
         completionProvider.dispose();
@@ -356,7 +358,7 @@ function ApplyCompletionToProvider(context, completionItems) {
 }
 //终止  
 function deactivate() {
-    output.appendLine("*** gizbox extension deactivate ***" + (new Date()).toLocaleString());
+    gizboxOutput.appendLine("*** gizbox extension deactivate ***" + (new Date()).toLocaleString());
     return ClientEnd();
 }
 exports.deactivate = deactivate;

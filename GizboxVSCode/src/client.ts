@@ -49,13 +49,15 @@ let timerUpdateHightlight : number = -1;
 let timerUpdateCompletion : number = -1;
 
 //控制台  
-let output : vscode.OutputChannel = vscode.window.createOutputChannel("Gizbox");
+let gizboxOutput : vscode.OutputChannel = vscode.window.createOutputChannel("Gizbox");
+let clientOutputChannel : vscode.OutputChannel = vscode.window.createOutputChannel('Gizbox Client Output');
+let clientTraceOuputChannel : vscode.OutputChannel = vscode.window.createOutputChannel('GizboxLang Server Trace');
 
 
 //激活扩展  
 export function activate(context: vscode.ExtensionContext) {
 
-    output.appendLine("*** gizbox extension activate ***" + (new Date()).toLocaleString());
+    gizboxOutput.appendLine("*** gizbox extension activate ***" + (new Date()).toLocaleString());
 
     //启动client
     //（REW: 貌似只有第一次进入gix文档会调用该函数来激活扩展）     
@@ -76,9 +78,8 @@ export function activate(context: vscode.ExtensionContext) {
     //所有Visible编辑器改变事件  
     //（REW:output窗口也是文件编辑器）  
     //（REW:切换或打开文本标签页会触发，触发时activeTextEditor已更新）    
+    //（REW:不同版本vscode不一样）  
     vscode.window.onDidChangeVisibleTextEditors((veditors : readonly vscode.TextEditor[]) => {
-        output.appendLine("VisibleTextEditors Changed:" + veditors.map(e => e?.document.fileName + ", ") + "  语言类型" + veditors.map(e => e?.document.languageId + ", "));
-        output.appendLine("Current LanguageID" + vscode.window.activeTextEditor?.document.languageId);
         OnChangeDocument(context);
     });
 
@@ -156,6 +157,8 @@ function OnChangeDocument(context : vscode.ExtensionContext) : void
 {
     if(vscode.window.activeTextEditor == currentTextEditor) return;
 
+    gizboxOutput.appendLine("workspace documents: " + vscode.workspace.textDocuments.map(doc => doc.languageId + ", "));
+
     //设置CurrentTextEditor    
     let prevTextEditor = currentTextEditor;
     currentTextEditor = vscode.window.activeTextEditor;
@@ -163,9 +166,9 @@ function OnChangeDocument(context : vscode.ExtensionContext) : void
     //启动或者终止客户端  
     let anyGizboxDocument = false;
     let currIsGizbox = currentTextEditor?.document.languageId === 'gizbox';
-    for(let i = 0; i < vscode.window.visibleTextEditors.length; ++i)
+    for(let i = 0; i < vscode.workspace.textDocuments.length; ++i) //vscode.window.visibleTextEditors存在问题，不同vscode版本好像不一样    
     {
-        if(vscode.window.visibleTextEditors[i]?.document.languageId === 'gizbox')
+        if(vscode.workspace.textDocuments[i].languageId === 'gizbox')
         {
             anyGizboxDocument = true;
             break;
@@ -173,9 +176,9 @@ function OnChangeDocument(context : vscode.ExtensionContext) : void
     }
     if(anyGizboxDocument === true && clientRunning === false)
     {
-        output.appendLine("启动Client");
+        gizboxOutput.appendLine("启动Client");
         ClientStart(context);
-        output.appendLine("启动Client完毕...");
+        gizboxOutput.appendLine("启动Client完毕...");
     }
     else if(anyGizboxDocument === false && clientRunning === true)
     {
@@ -185,10 +188,10 @@ function OnChangeDocument(context : vscode.ExtensionContext) : void
     //重新同步文档(新的gix文档时)    
     if(prevTextEditor != currentTextEditor && currIsGizbox)
     {
-        output.appendLine("同步gix文档中...");
+        gizboxOutput.appendLine("同步gix文档中...");
         //开始同步文档  
         StartSyncDocument(currentTextEditor);
-        output.appendLine("同步文档完毕...");
+        gizboxOutput.appendLine("同步文档完毕...");
     }
 }
 
@@ -204,7 +207,7 @@ function StartSyncDocument(teditor:vscode.TextEditor | undefined) : void
 
     //首次刷新高亮  
     Request_Highlight(teditor, {line:0, character:0});
-    output.appendLine("初始全量更新...");
+    gizboxOutput.appendLine("初始全量更新...");
 
 
     //每10秒全量更新(同时刷新高亮)     
@@ -213,11 +216,10 @@ function StartSyncDocument(teditor:vscode.TextEditor | undefined) : void
         {
             Request_FullContentUpdate(teditor);
             Request_Highlight(teditor, {line:0, character:0});
-            output.appendLine("计时全量更新成功...");
+            gizboxOutput.appendLine("计时全量更新成功...");
         }
     }, 10000);
 }
-
 
 function ClientStart(context: vscode.ExtensionContext)
 {
@@ -232,32 +234,35 @@ function ClientStart(context: vscode.ExtensionContext)
         debug: { command: 'dotnet', args: [serverModule] }
     };
     const clientOptions: LanguageClientOptions = {
-        documentSelector: [{ scheme: 'file', language: 'text/plain' }],
+        documentSelector: [{ scheme: 'file', language: 'plaintext' }],
         synchronize: {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/.gix')
         },
-        outputChannelName: 'GizboxLang Server',
-        traceOutputChannel: vscode.window.createOutputChannel('GizboxLang Server Trace'),
+        // outputChannelName: 'GizboxLang Server' ,
+        outputChannel : clientOutputChannel,
+        traceOutputChannel: clientTraceOuputChannel,
         initializationOptions:{
             //...其他信息    
         }
     };
     client = new LanguageClient(
         'langServer',
-        'GizboxLang Server',
+        'GizboxLang',
         serverOptions,
         clientOptions
     );
 
+
     //客户端启动  
     var promise = client.start();
-
     clientRunning = true;
+    gizboxOutput.appendLine("------------------ GIZBOX CLIENT START ------------------");
+
 
 
     //截获Log  
     client.onNotification("debug/log", (params) => {
-        output.appendLine("server log >>> " + params.text);
+        gizboxOutput.appendLine("server log >>> " + params.text);
     });
 
     
@@ -270,7 +275,7 @@ function ClientStart(context: vscode.ExtensionContext)
     
 
 
-    output.appendLine("*** gizbox client started ***" + (new Date()).toLocaleString());
+    gizboxOutput.appendLine("*** gizbox client started ***" + (new Date()).toLocaleString());
 }
 
 //Update  
@@ -300,9 +305,6 @@ function ClientUpdate(deltatime : number)
 
 function ClientEnd(): Thenable<void> | undefined
 {
-    if (!client) {
-        return undefined;
-    }
     if(clientRunning === false){
         return undefined;
     }
@@ -311,12 +313,13 @@ function ClientEnd(): Thenable<void> | undefined
     clearInterval(fullContentUpdateByIntervalTimeout);
 
     //关闭客户端和服务器  
-    let then = client.stop();
+    let then = client.dispose(4000);
+    
+    // client.dispose();
     clientRunning = false;
-    client.dispose();
 
     
-    output.appendLine("*** gizbox client end ***" + (new Date()).toLocaleString());
+    gizboxOutput.appendLine("------------------ GIZBOX CLIENT END ------------------");
     return then;
 }
 
@@ -379,7 +382,7 @@ function Request_Highlight(teditor: vscode.TextEditor | undefined, position : an
         ApplyHighlights(teditor, highlights);
 
     }, error => {
-        output.appendLine("request highlight err:" + error);
+        gizboxOutput.appendLine("request highlight err:" + error);
     });
 }
 
@@ -387,7 +390,7 @@ function Request_Highlight(teditor: vscode.TextEditor | undefined, position : an
 function ApplyHighlights(teditor: vscode.TextEditor | undefined, highlights: unknown) {
     if (Array.isArray(highlights) && highlights.length > 0)
     {
-        output.appendLine("---Apply Highlights  length:" + highlights.length);
+        gizboxOutput.appendLine("---Apply Highlights  length:" + highlights.length);
         const classNameDecorationOpts: vscode.DecorationOptions[] = [];
         const variableDecorationOpts: vscode.DecorationOptions[] = [];
         const literalDecorationOpts: vscode.DecorationOptions[] = [];
@@ -447,7 +450,7 @@ function ApplyCompletionToProvider(context: vscode.ExtensionContext, completionI
     });
 
     
-    output.appendLine("---Apply Completion  length:" + completionList.length);
+    gizboxOutput.appendLine("---Apply Completion  length:" + completionList.length);
 
     // 如果已经存在补全提供者，则清理它
     if (completionProvider) {
@@ -468,7 +471,7 @@ function ApplyCompletionToProvider(context: vscode.ExtensionContext, completionI
 //终止  
 export function deactivate(): Thenable<void> | undefined 
 {
-    output.appendLine("*** gizbox extension deactivate ***" + (new Date()).toLocaleString());
+    gizboxOutput.appendLine("*** gizbox extension deactivate ***" + (new Date()).toLocaleString());
 
     return ClientEnd();
 }
