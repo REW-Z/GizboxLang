@@ -16,6 +16,7 @@ let clientRunning : boolean = false;
 
 //自动补全提供器  
 let completionProvider: vscode.Disposable | undefined;
+let cachedCompletionList: vscode.CompletionItem[] = [];
 
 //当前文本编辑器    
 let currentTextEditor : vscode.TextEditor | undefined;
@@ -23,23 +24,27 @@ let currentTextEditor : vscode.TextEditor | undefined;
 //Timeout相关  
 let fullContentUpdateByIntervalTimeout : NodeJS.Timeout | undefined = undefined;
 
-//高亮   
+//***带语义tokens的高亮***     
 // 类名  
 const classNameDecoration = vscode.window.createTextEditorDecorationType({
-    color: 'rgba(40, 140, 140, 0.9)'
+    color: 'rgba(78, 201, 176, 0.85)'
+});
+//值类型(结构体和枚举)
+const structNameDecoration = vscode.window.createTextEditorDecorationType({
+    color: 'rgb(184, 215, 163)'
 });
 // 变量名  
 const variableAndMemberDecoration = vscode.window.createTextEditorDecorationType({
-    color: 'rgba(180, 180, 180, 0.9)' 
+    color: 'rgba(202, 202, 202, 0.9)' 
 });
 // 字面量
 const literalDecoration = vscode.window.createTextEditorDecorationType({
-    color: 'rgba(255, 255, 100, 0.5)', 
+    color: 'rgba(224, 224, 179, 0.5)', 
     backgroundColor : 'rgba(0, 0, 0, 0.1)'
 });
 // 命名空间黑
 const namespaceDecoration = vscode.window.createTextEditorDecorationType({
-    color: 'rgba(100, 100, 100, 0.9)'
+    color: 'rgba(153, 153, 153, 0.9)'
 });
 
 //状态  
@@ -111,29 +116,25 @@ export function activate(context: vscode.ExtensionContext) {
                 timerUpdateHightlight = 500;
             }
 
-            //update中  请求Completion   
+            
+            // 更新中请求 Completion（使用防抖：覆盖旧回调以捕获最新位置）
             {
-                if (timerUpdateCompletion < 0.0) {
-                    updateCompletionCallback = (() => {
-                        {
-                            const position = lastChange.range.start;
-                            const params = {
-                                textDocument: { uri: document.uri.toString() },
-                                position: { line: position.line, character: position.character + 1 }
-                            };
-                            
-                            client.sendRequest('textDocument/completion', params).then((completionItems: any) => {
-                                ApplyCompletionToProvider(context, completionItems);
-        
-                                //立刻显示全部补全项（不等待输入首字母或者模糊字母才显示）    
-                                if(lastChange.text.endsWith('.'))
-                                {
-                                    vscode.commands.executeCommand('editor.action.triggerSuggest');
-                                }
-                            });
-                        } 
+                // 每次文本变化都更新回调为最新位置（覆盖之前的闭包），真正执行时才向服务器发送请求
+                updateCompletionCallback = (() => {
+                    const position = lastChange.range.start;
+                    const params = {
+                        textDocument: { uri: document.uri.toString() },
+                        position: { line: position.line, character: position.character + 1 }
+                    };
+
+                    client.sendRequest('textDocument/completion', params).then((completionItems: any) => {
+                        ApplyCompletionToProvider(context, completionItems);
+                    }, error => {
+                        gizboxOutput.appendLine("request completion err:" + error);
                     });
-                }
+                });
+
+                // 重置防抖计时器（新的输入会覆盖之前计划的请求）
                 timerUpdateCompletion = 500;
             }
         }
@@ -317,6 +318,7 @@ function ClientEnd(): Thenable<void> | undefined
     
     // client.dispose();
     clientRunning = false;
+    cachedCompletionList = [];
 
     
     gizboxOutput.appendLine("------------------ GIZBOX CLIENT END ------------------");
@@ -392,6 +394,7 @@ function ApplyHighlights(teditor: vscode.TextEditor | undefined, highlights: unk
     {
         gizboxOutput.appendLine("---Apply Highlights  length:" + highlights.length);
         const classNameDecorationOpts: vscode.DecorationOptions[] = [];
+        const structNameDecorationOpts: vscode.DecorationOptions[] = [];
         const variableDecorationOpts: vscode.DecorationOptions[] = [];
         const literalDecorationOpts: vscode.DecorationOptions[] = [];
         const namespaceDecorationOpts: vscode.DecorationOptions[] = [];
@@ -421,6 +424,12 @@ function ApplyHighlights(teditor: vscode.TextEditor | undefined, highlights: unk
                 case 4: // Namespace  
                     namespaceDecorationOpts.push(decoration);
                     break;
+                case 5: // Enum 
+                    structNameDecorationOpts.push(decoration);
+                    break;
+                case 6: // Struct
+                    structNameDecorationOpts.push(decoration);
+                    break;
                 default:
                     // 默认使用文本高亮
                     namespaceDecorationOpts.push(decoration);
@@ -430,6 +439,7 @@ function ApplyHighlights(teditor: vscode.TextEditor | undefined, highlights: unk
 
         // 应用不同的装饰
         teditor?.setDecorations(classNameDecoration, classNameDecorationOpts);
+        teditor?.setDecorations(structNameDecoration, structNameDecorationOpts);
         teditor?.setDecorations(variableAndMemberDecoration, variableDecorationOpts);
         teditor?.setDecorations(literalDecoration, literalDecorationOpts);
         teditor?.setDecorations(namespaceDecoration, namespaceDecorationOpts);
@@ -449,24 +459,22 @@ function ApplyCompletionToProvider(context: vscode.ExtensionContext, completionI
         return vsitm;
     });
 
-    
-    gizboxOutput.appendLine("---Apply Completion  length:" + completionList.length);
+    cachedCompletionList = completionList;
 
-    // 如果已经存在补全提供者，则清理它
+
+    //重新创建补全提供器  
     if (completionProvider) {
-        completionProvider.dispose();
+      completionProvider.dispose();
     }
+    completionProvider = vscode.languages.registerCompletionItemProvider('gizbox', {
+      provideCompletionItems: (document, position) => {
+        return cachedCompletionList;
+      }
+    }, '.'); // 可加触发字符
+    setTimeout(() => vscode.commands.executeCommand('editor.action.triggerSuggest'), 10);
 
-    // 创建新的补全提供者
-    const provider = {
-        provideCompletionItems: () => completionList
-    };
-
-    // 注册新的补全提供者，并添加到 context.subscriptions 中
-    completionProvider = vscode.languages.registerCompletionItemProvider('gizbox', provider);
-    context.subscriptions.push(completionProvider);
+    gizboxOutput.appendLine("---Apply Completion  length:" + completionList.length);
 }
-
 
 //终止  
 export function deactivate(): Thenable<void> | undefined 

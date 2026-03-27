@@ -379,25 +379,19 @@
         {
             "scope": "keyword.control.gizbox",
             "settings": {
-                "foreground": "#749fd6" 
-            }
-        },
-        {
-            "scope": "storage.type.gizbox",
-            "settings": {
-                "foreground": "#84b5ff" 
+                "foreground": "#569cd6" 
             }
         },
         {
             "scope": "string.quoted.double.gizbox",
             "settings": {
-                "foreground": "#945e45" 
+                "foreground": "#d69d85" 
             }
         },
         {
-            "scope": "comments.control.gizbox",
+			"scope": "comment.line.double-slash.gizbox",
             "settings": {
-                "foreground": "#226622" 
+                "foreground": "#6a9955" 
             }
         }
     ]
